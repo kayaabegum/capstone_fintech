@@ -21,3 +21,6 @@ def profile (request):
 
 def tables (request): 
     return render(request, 'tables.html')
+
+def tables2 (request): 
+    return render(request, 'tables2.html')

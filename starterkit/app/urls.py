@@ -12,6 +12,8 @@ urlpatterns = [
     path('profile', views.profile, name='profile'),
     path('tables', views.tables, name='tables'),
     path('apexmixedcharts', views.apexmixedcharts, name='apexmixedcharts'),
+    path('tables2', views.tables2, name='tables2'),
+
     
 ]
 
