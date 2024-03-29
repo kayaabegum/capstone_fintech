@@ -1,0 +1,199 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block styles %}
+
+        <!-- Prism CSS -->
+        <link rel="stylesheet" href="{% static 'assets/libs/prismjs/themes/prism-coy.min.css'%}">
+                
+{% endblock %}
+
+{% block content %}
+
+                    <!-- Start::main-content -->
+                    <div class="main-content">
+                        <!-- Page Header -->
+                        <div class="block justify-between page-header md:flex">
+                            <div>
+                                <h3 class="!text-defaulttextcolor dark:!text-defaulttextcolor/70 dark:text-white dark:hover:text-white text-[1.125rem] font-semibold">Tables</h3>
+                            </div>
+                            <ol class="flex items-center whitespace-nowrap min-w-0">
+                                <li class="text-[0.813rem] ps-[0.5rem]">
+                                <a class="flex items-center text-primary hover:text-primary dark:text-primary truncate" href="javascript:void(0);">
+                                    Tables
+                                    <i class="ti ti-chevrons-right flex-shrink-0 text-[#8c9097] dark:text-white/50 px-[0.5rem] overflow-visible rtl:rotate-180"></i>
+                                </a>
+                                </li>
+                                <li class="text-[0.813rem] text-defaulttextcolor font-semibold hover:text-primary dark:text-[#8c9097] dark:text-white/50 " aria-current="page">
+                                Tables
+                                </li>
+                            </ol>
+                        </div>
+                        <!-- Page Header Close -->
+
+                       
+                        <!-- Start:: row-3 -->
+                        <div class="grid grid-cols-24 gap-2" >
+                            <div class="xl:col-span-6 col-span-12">
+                                <div class="box custom-box">
+                                    <div class="box-header justify-between">
+                                        <div class="box-title">
+                                            ARCLK Profitability Measurements
+                                        </div>
+                                        <div class="prism-toggle">
+                                            <button type="button" class="ti-btn !py-1 !px-2 ti-btn-primary !font-medium !text-[0.75rem]">Show Code<i class="ri-code-line ms-2 inline-block align-middle"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="box-body" >
+                                        <div class="table-responsive" >
+                                            <table class="table whitespace-nowrap table-borderless min-w-full">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" class="text-start">Ratios</th>
+                                                        <th scope="col" class="text-start">2022FY</th>
+                                                        <th scope="col" class="text-start">2023FY</th>
+                                                        <th scope="col" class="text-start">Change</th>
+                                                    
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">P/E</th>
+                                                        <td>3.2</td>
+                                                        <td>12.8</td>
+                                                       
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Price to Book</th>
+                                                        <td>#29.2</td>
+                                                        <td>1.9</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">EV/EBITDA</th>
+                                                        <td>10.3</td>
+                                                        <td>7.8</td>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">EV/FCFF</th>
+                                                        <td>-12.6</td>
+                                                        <td>-7.4</td>
+                                                        <td><span class="badge bg-danger  text-white">-41.5%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Net Debt / EBITDA </th>
+                                                        <td>2.7</td>
+                                                        <td>2.6</td>
+                                                        <td><span class="badge bg-danger  text-white"> -4.1%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Net Debt / FCFF </th>
+                                                        <td>-3.5</td>
+                                                        <td>-2.4</td>
+                                                        <td><span class="badge bg-danger  text-white">- 29.7% </span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start"> ROA </th>
+                                                        <td>4.0</td>
+                                                        <td>3.1</td>
+                                                        <td><span class="badge bg-danger  text-white">-21.0%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start"> ROE </th>
+                                                        <td>17.4</td>
+                                                        <td>14.5</td>
+                                                        <td><span class="badge bg-danger  text-white">-16.9%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Current Ratio</th>
+                                                        <td>1.2</td>
+                                                        <td>1.2</td>
+                                                        <td><span class="badge bg-success  text-white">2.0%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Quick Ratio</th>
+                                                        <td>0.8</td>
+                                                        <td>0.9</td>
+                                                        <td><span class="badge bg-success  text-white">12.5%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Cash Ratio</th>
+                                                        <td>0.3</td>
+                                                        <td>0.4</td>
+                                                        <td><span class="badge bg-success  text-white">29.0%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Total Debt / Total Assets </th>
+                                                        <td>36.5</td>
+                                                        <td>39.5</td>
+                                                        <td><span class="badge bg-success  text-white">8.3%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Leverage Ratio</th>
+                                                        <td>75.0</td>
+                                                        <td>76.9</td>
+                                                        <td><span class="badge bg-success  text-white">2.5%</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Cash / Market Cap </th>
+                                                        <td>-12.6</td>
+                                                        <td>0.4</td>
+                                                        <td><span class="badge bg-danger  text-white">-737.0%</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="box-footer hidden border-t-0">
+        <!-- Prism Code -->
+        <pre class="language-html"><code class="language-html">
+            &lt;div class="table-responsive"&gt;
+                &lt;table class="table whitespace-nowrap table-borderless min-w-full"&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="col" class="text-start"&gt;User Name&lt;/th&gt;
+                            &lt;th scope="col" class="text-start"&gt;Transaction Id&lt;/th&gt;
+                            &lt;th scope="col" class="text-start"&gt;Created&lt;/th&gt;
+                            &lt;th scope="col" class="text-start"&gt;Status&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="row" class="text-start"&gt;Harshrath&lt;/th&gt;
+                            &lt;td&gt;#5182-3467&lt;/td&gt;
+                            &lt;td&gt;24 May 2022&lt;/td&gt;
+                            &lt;td&gt;&lt;span class="badge bg-primary text-white"&gt;Fixed&lt;/span&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="row" class="text-start"&gt;Zozo Hadid&lt;/th&gt;
+                            &lt;td&gt;#5182-3412&lt;/td&gt;
+                            &lt;td&gt;02 July 2022&lt;/td&gt;
+                            &lt;td&gt;&lt;span class="badge bg-warning  text-white"&gt;In Progress&lt;/span&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="row" class="text-start"&gt;Martiana&lt;/th&gt;
+                            &lt;td&gt;#5182-3423&lt;/td&gt;
+                            &lt;td&gt;15 April 2022&lt;/td&gt;
+                            &lt;td&gt;&lt;span class="badge bg-success  text-white"&gt;Completed&lt;/span&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th scope="row" class="text-start"&gt;Alex Carey&lt;/th&gt;
+                            &lt;td&gt;#5182-3456&lt;/td&gt;
+                            &lt;td&gt;17 March 2022&lt;/td&gt;
+                            &lt;td&gt;&lt;span class="badge bg-danger  text-white"&gt;Pending&lt;/span&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;</code></pre>
+       
+{% endblock %}
+
+{% block scripts %}
+
+        <!-- Prism JS -->
+        <script src="{% static 'assets/libs/prismjs/prism.js'%}"></script>
+        <script src="{% static 'assets/js/prism-custom.js'%}"></script>
+
+{% endblock %}
