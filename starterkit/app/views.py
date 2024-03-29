@@ -24,3 +24,9 @@ def tables (request):
 
 def tables2 (request): 
     return render(request, 'tables2.html')
+
+def apexcolumncharts (request): 
+    return render(request, 'apexcolumncharts.html') 
+
+def apexlinecharts (request):     
+    return render(request, 'apexlinecharts.html')

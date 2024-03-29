@@ -13,6 +13,8 @@ urlpatterns = [
     path('tables', views.tables, name='tables'),
     path('apexmixedcharts', views.apexmixedcharts, name='apexmixedcharts'),
     path('tables2', views.tables2, name='tables2'),
+    path('apexcolumncharts', views.apexcolumncharts, name='apexcolumncharts'),
+    path('apexlinecharts', views.apexlinecharts, name='apexlinecharts'),
 
     
 ]

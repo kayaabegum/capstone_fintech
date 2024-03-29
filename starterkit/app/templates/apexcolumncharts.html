@@ -1,0 +1,56 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block styles %}
+
+
+        
+{% endblock %}
+
+{% block content %}
+
+                    <div class="main-content">
+                        <!-- Page Header -->
+                        <div class="block justify-between page-header md:flex">
+                            <div>
+                                <h3 class="!text-defaulttextcolor dark:!text-defaulttextcolor/70 dark:text-white dark:hover:text-white text-[1.125rem] font-semibold"> Apex Column Charts</h3>
+                            </div>
+                           
+                        </div>
+                        <!-- Page Header Close -->
+        
+                        <!-- Start::row-1 -->
+                        <div class="grid grid-cols-12 gap-x-6">
+                            <div class="xl:col-span-6 col-span-12">
+                                <div class="box custom-box">
+                                    <div class="box-header">
+                                        <div class="box-title">ARCLK Net Debt Analysis</div>
+                                    </div>
+                                    <div class="box-body">
+                                        <div id="column-basic"></div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                            
+                            
+                            
+                            
+                            
+                          
+                        </div>
+                        <!--End::row-1 -->
+        
+                    </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+        <!-- Apex Charts JS -->
+        <script src="{% static 'assets/libs/apexcharts/apexcharts.min.js'%}"></script>
+
+        <!-- Internal Apex-Column-Charts JS -->
+        <script src="{% static 'assets/js/apexcharts-column.js'%}"></script>
+
+{% endblock %}
