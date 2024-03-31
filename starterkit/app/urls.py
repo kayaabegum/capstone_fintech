@@ -4,8 +4,7 @@ from django.urls import path
 appname = 'app'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('index', views.index, name='index'),
+    path('', views.cryptomarketcap, name='cryptomarketcap'),
     path('datatables', views.datatables, name='datatables'),
     path('gridtables', views.gridtables, name='gridtables'),
     path('cryptomarketcap', views.cryptomarketcap, name='cryptomarketcap'),

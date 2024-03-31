@@ -1,4 +1,9 @@
+import pymongo
 from django.shortcuts import render
+from pymongo import MongoClient
+from db_connection import get_db
+from .models import hissekar
+from django.core.paginator import Paginator
 
 # Create your views here.
 def index (request): 
@@ -16,8 +21,18 @@ def apexmixedcharts (request):
 def cryptomarketcap (request): 
     return render(request, 'cryptomarketcap.html')
 
-def profile (request): 
-    return render(request, 'profile.html')
+
+def profile(request):
+    db = get_db()
+    collection = db['hissekar']
+    pipeline = []
+    if request.GET.get('year'):
+        year = request.GET['year']
+        pipeline.append({'$match': {'year': year}})
+    hissekar = collection.aggregate(pipeline)
+    
+    return render(request, 'profile.html', {'hissekar': hissekar})
+
 
 def tables (request): 
     return render(request, 'tables.html')
@@ -30,3 +45,4 @@ def apexcolumncharts (request):
 
 def apexlinecharts (request):     
     return render(request, 'apexlinecharts.html')
+

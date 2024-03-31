@@ -1,37 +1,36 @@
-// pagination.js
-// pagination.js
+const paginationLinks = document.querySelectorAll(".ti-pagination a");
+const currentPageElement = document.querySelector(".ti-pagination .active a");
 
-function initPagination() {
-  var itemsPerPage = 10; // Sayfa başına gösterilecek öğe sayısı
-  var tableRows = document.querySelectorAll('crypto_table tbody tr');
-  var totalPages = Math.ceil(tableRows.length / itemsPerPage);
+const updatePagination = (pageNumber) => {
+  // Sayfa numarasına göre aktif öğeyi güncelleyin
+  currentPageElement.textContent = pageNumber;
+  currentPageElement.parentElement.classList.remove("active");
+  document.querySelector(`.ti-pagination .page-item:nth-child(${pageNumber})`).classList.add("active");
 
-  var paginationHTML = '';
-  for (var i = 1; i <= totalPages; i++) {
-      paginationHTML += '<li class="page-item"><a class="page-link px-3 py-[0.375rem]" href="javascript:void(0);" onclick="showPage(' + i + ')">' + i + '</a></li>';
-  }
-  document.getElementById('pagination').innerHTML = paginationHTML;
+  // Sayfa içeriğini güncelleyin (burada AJAX veya benzer bir yöntem kullanın)
+  // Örnek:
+  const link = document.createElement("a");
+      link.href = `#page-${pageNumber}`;
+      link.textContent = pageNumber;
+      pagination.appendChild(link);
+};
 
-  // İlk sayfayı göster
-  showPage(1);
-}
+paginationLinks.forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
 
-function showPage(pageNumber) {
-  var itemsPerPage = 10; // Sayfa başına gösterilecek öğe sayısı
-  var tableRows = document.querySelectorAll('crypto_table tbody tr');
-  var startIndex = (pageNumber - 1) * itemsPerPage;
-  var endIndex = startIndex + itemsPerPage;
+    const pageNumber = parseInt(link.textContent);
 
-  // Verileri tabloda göster
-  var tableHTML = '';
-  for (var i = startIndex; i < Math.min(endIndex, tableRows.length); i++) {
-      tableHTML += tableRows[i].outerHTML;
-  }
-  // Tabloyu güncelle
-  document.getElementById('crypto_table_body').innerHTML = tableHTML;
-}
+    if (pageNumber === currentPageElement.textContent) {
+      return;
+    }
 
+    updatePagination(pageNumber);
+  });
+});
 
+// İlk sayfayı varsayılan olarak etkinleştirin
+updatePagination(parseInt(currentPageElement.textContent));
 
 (function () {
   "use strict";
@@ -875,52 +874,4 @@ var spark3 = {
 document.getElementById('dashcoin-chart').innerHTML = '';
 var spark3 = new ApexCharts(document.querySelector("#dashcoin-chart"), spark3);
 spark3.render();
-/* End:: Main cards charts */
-// pagination.js
-
-function initPagination() {
-  var itemsPerPage = 10; // Sayfa başına gösterilecek öğe sayısı
-
-  // Tablodaki satırları doğrudan al
-  var tableRows = document.querySelectorAll('.crypto_table_body tbody tr');
-  var totalPages = Math.ceil(tableRows.length / itemsPerPage);
-
-  // Sayfaları oluştur
-  var paginationHTML = '';
-  for (var i = 1; i <= totalPages; i++) {
-      paginationHTML += '<li class="page-item"><a class="page-link px-3 py-[0.375rem]" href="javascript:void(0);" onclick="showPage(' + i + ')">' + i + '</a></li>';
-  }
-
-  // Pagination alanını güncelle
-  var paginationElement = document.getElementById('pagination');
-  if (paginationElement) {
-      paginationElement.innerHTML = paginationHTML;
-  }
-
-  // İlk sayfayı göster
-  showPage(1);
-}
-
-function showPage(pageNumber) {
-  var itemsPerPage = 10; // Sayfa başına gösterilecek öğe sayısı
-  var startIndex = (pageNumber - 1) * itemsPerPage;
-  var endIndex = startIndex + itemsPerPage;
-
-  // Tablodaki satırları doğrudan al
-  var tableRows = document.querySelectorAll('.crypto_table_body tbody tr');
-
-  // Verileri tabloda göster
-  var tableHTML = '';
-  for (var i = startIndex; i < Math.min(endIndex, tableRows.length); i++) {
-      tableHTML += tableRows[i].outerHTML;
-  }
-
-  // Tabloyu güncelle
-  var tableBodyElement = document.getElementById('crypto_table_body');
-  if (tableBodyElement) {
-      tableBodyElement.innerHTML = tableHTML;
-  }
-}
-
-
 })();

@@ -1,0 +1,438 @@
+{% extends 'components/base.html' %} {% load static %} {% block styles %}
+<link rel="stylesheet" href="{% static 'assets/libs/glightbox/css/glightbox.min.css'%}" />
+
+{% endblock %} {% block content %}
+
+<div class="main-content">
+  <!-- Page Header -->
+  <div class="block justify-between page-header md:flex">
+    <div>
+      <h3
+        class="!text-defaulttextcolor dark:!text-defaulttextcolor/70 dark:text-white dark:hover:text-white text-[1.125rem] font-semibold">
+        Profile
+      </h3>
+    </div>
+    <ol class="flex items-center whitespace-nowrap min-w-0">
+      <li class="text-[0.813rem] ps-[0.5rem]">
+        <a class="flex items-center text-primary hover:text-primary dark:text-primary truncate"
+          href="javascript:void(0);">
+          Pages
+          <i
+            class="ti ti-chevrons-right flex-shrink-0 text-[#8c9097] dark:text-white/50 px-[0.5rem] overflow-visible rtl:rotate-180"></i>
+        </a>
+      </li>
+      <li
+        class="text-[0.813rem] text-defaulttextcolor font-semibold hover:text-primary dark:text-[#8c9097] dark:text-white/50"
+        aria-current="page">
+        Profile
+      </li>
+    </ol>
+  </div>
+  <!-- Page Header Close -->
+
+  <!-- Start::row-1 -->
+  <div class="grid grid-cols-12 gap-x-6">
+    <div class="xxl:col-span-4 xl:col-span-12 col-span-12">
+      <div class="box overflow-hidden">
+        <div class="box-body !p-0">
+          <div class="sm:flex items-start p-6 main-profile-cover">
+            <div>
+              <span class="avatar avatar-xxl avatar-rounded online me-4">
+                <img src="{% static 'assets/images/company-logos/arclk.png'%}" alt="" />
+              </span>
+            </div>
+            <div class="flex-grow main-profile-info">
+              <div class="flex items-center !justify-between">
+                <h6 class="font-semibold mb-1 text-white text-[1rem]">ARCLK</h6>
+              </div>
+              <!--<p class="mb-1 !text-white  opacity-[0.7]">Chief Executive Officer (C.E.O)</p>-->
+              <p class="text-[0.75rem] text-white mb-6 opacity-[0.5]">
+                <span class="me-4 inline-flex"><i class="ri-building-line me-1 align-middle"></i>Istanbul</span>
+                <span class="inline-flex"><i class="ri-map-pin-line me-1 align-middle"></i>Istanbul</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="p-6 border-b border-dashed dark:border-defaultborder/10">
+          <div class="mb-6">
+            <p class="text-[.9375rem] mb-2 font-semibold">
+              About:
+            </p>
+            <p class="text-[0.75rem] text-[#8c9097] dark:text-white/50 opacity-[0.7] mb-0">
+              <b class="text-defaulttextcolor">Arcelik A.S.</b> manufactures and sells refrigerators, washing machines,
+              cooking appliances, vacuum cleaners, refrigeration compressors, electric motors and consumer electronics
+              products.
+            </p>
+          </div>
+          <div class="mb-0">
+            <p class="text-[.9375rem] mb-2 font-semibold">Links :</p>
+            <div class="mb-0">
+              <p class="mb-1">
+                <a href="javascript:void(0)" class="text-primary"><u>https://www.arcelikglobal.com/en/</u></a>
+              </p>
+              <p class="mb-0">
+                <a href="javascript:void(0)" class="text-primary"><u>https://www.arcelikglobal.com/</u></a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="p-6">
+          <p class="text-[.9375rem] mb-2 me-6 font-semibold">Yönetim Kurulu </p>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <div class="sm:flex items-start">
+                <div class="sm:ms-2 ms-0 sm:mt-0 mt-1 font-semibold flex-grow">
+                  <p class="mb-0 leading-none">Vehbi Koç</p>
+                  <span class="text-[.6875rem] text-[#8c9097] dark:text-white/50 opacity-[0.7]">Founder</span>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="sm:flex items-start">
+                <div class="sm:ms-2 ms-0 sm:mt-0 mt-1 font-semibold flex-grow">
+                  <p class="mb-0 leading-none">Hakan Hamdi Bulgurlu</p>
+                  <span class="text-[.6875rem] text-[#8c9097] dark:text-white/50 opacity-[0.7]">CEO</span>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="sm:flex items-start">
+                </span>
+                <div class="sm:ms-2 ms-0 sm:mt-0 mt-1 font-semibold flex-grow">
+                  <p class="mb-0 leading-none">Özkan Çimen</p>
+                  <span class="text-[.6875rem] text-[#8c9097] dark:text-white/50 opacity-[0.7]">CFO</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="p-6 border-b border-dashed dark:border-defaultborder/10">
+          <p class="text-[.9375rem] mb-2 me-6 font-semibold">
+            Contact Information :
+          </p>
+          <div class="text-[#8c9097] dark:text-white/50">
+            <p class="mb-2">
+              <span class="avatar avatar-sm avatar-rounded me-2 bg-light text-[#8c9097] dark:text-white/50">
+                <i class="ri-mail-line align-middle text-[.875rem] text-[#8c9097] dark:text-white/50"></i>
+              </span>
+              kurumsal@arcelik.com
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="xxl:col-span-8 xl:col-span-12 col-span-12">
+    <div class="grid grid-cols-12 gap-x-6">
+      <div class="xl:col-span-12 col-span-12">
+        <div class="box">
+          <div class="box-body !p-0">
+            <div class="!p-4 border-b dark:border-defaultborder/10 border-dashed md:flex items-center justify-between">
+              <nav class="-mb-0.5 sm:flex md:space-x-6 rtl:space-x-reverse pb-2">
+                <a class="w-full sm:w-auto flex active hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="company-info-tab" data-hs-tab="#company-info-tab-pane"
+                  aria-controls="company-info-tab-pane">
+                  <i class="ri-building-line align-middle inline-block me-1"></i>Company Information
+                </a>
+
+                <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="profitability-tab" data-hs-tab="#profitability-tab-pane"
+                  aria-controls="profitability-tab-pane">
+                  <i class="ri-bar-chart-2-line align-middle inline-block me-1"></i>Profitability Measurements
+                </a>
+
+                <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="ratios-tab" data-hs-tab="#ratios-tab-pane"
+                  aria-controls="ratios-tab-pane">
+                  <i class="ri-calculator-line align-middle inline-block me-1"></i>Ratios
+                </a>
+
+                <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="net-debt-tab" data-hs-tab="#net-debt-tab-pane"
+                  aria-controls="net-debt-tab-pane">
+                  <i class="ri-pie-chart-line align-middle inline-block me-1"></i>Net Debt Analysis
+                </a>
+
+                <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="price-tab" data-hs-tab="#price-tab-pane"
+                  aria-controls="price-tab-pane">
+                  <i class="ri-coin-line align-middle inline-block me-1"></i>Price Analysis
+                </a>
+
+                <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="balance-sheet-tab" data-hs-tab="#balance-sheet-tab-pane"
+                  aria-controls="balance-sheet-tab-pane">
+                  <i class="ri-file-list-3-line align-middle inline-block me-1"></i>Balance Sheet
+                </a>
+
+                <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="income-statement-tab" data-hs-tab="#income-statement-tab-pane"
+                  aria-controls="income-statement-tab-pane">
+                  <i class="ri-bar-chart-line align middle inline-block me-1"></i>Income Statement
+                </a>
+                <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
+                  href="javascript:void(0);" id="cashflow-statement-tab" data-hs-tab="#cashflow-statement-tab-pane"
+                  aria-controls="income-statement-tab-pane">
+                  <i class="ri-bar-chart-line align middle inline-block me-1"></i>Cash Flow Statement
+                </a>
+              </nav>
+            </div>
+            <div class=" !p-4">
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane show active fade !p-0 !border-0" id="company-info-tab-pane" role="tabpanel"
+                  aria-labelledby="company-info-tab" tabindex="0">
+
+                  <h4>Company bilgileri <h1> DENEEEEEE</h1>
+                  </h4>
+                </div>
+                <div class="tab-pane fade !p-0 !border-0 hidden !rounded-md" id="profitability-tab-pane" role="tabpanel"
+                  aria-labelledby="profitability-tab" tabindex="0">
+
+                  <h4>Profitability Measurements</h4>
+
+
+                  <div class="box-body">
+                    <div class="table-responsive">
+
+                      <div class="box-title">
+
+                        <table class="table whitespace-nowrap table-borderless min-w-full">
+                          <thead>
+                            <tr>
+
+                              <th scope="col" class="text-start">Indicator</th>
+                              <th scope="col" class="text-start">2022 FY</th>
+                              <th scope="col" class="text-start">2023 FY</th>
+                              <th scope="col" class="text-start">Change</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          <tbody>
+                            <tr>
+                              {% for h in hissekar%}
+                              <th scope="row" class="text-start">Revenue</th>
+
+                              <td>₺{{ h.revenue }}</td>
+
+                            </tr>
+                            <tr>
+                              <th scope="row" class="text-start">Gross Profit</th>
+
+                              <td>₺{{h.gross_profit}}</td>
+
+                            </tr>
+                            <tr>
+                              <th scope="row" class="text-start">Operating Income</th>
+
+                              <td>₺{{h.operating_income}}</td>
+
+                            </tr>
+                            <tr>
+                              <th scope="row" class="text-start">NOPAT</th>
+
+                              <td>₺{{h.nopat}}</td>
+
+                            </tr>
+                            <tr>
+                              <th scope="row" class="text-start">EBIT </th>
+                              <td>₺{{h.ebit}}</td>
+                            <tr>
+                              <th scope="row" class="text-start">EBITDA </th>
+                              <td>₺{{h.ebitda}}</td>
+                            </tr>
+                            <tr>
+                              <th scope="row" class="text-start"> Net Income </th>
+                              <td>₺{{h.net_income}}</td>
+                            </tr>
+                            <tr>
+                              <th scope="row" class="text-start"> FCFF </th>
+                              <td>₺ {{h.fcff}}</td>
+                            </tr>
+                            {%endfor%}
+                          </tbody>
+
+
+                          </tbody>
+                        </table>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="tab-pane fade !p-0 !border-0 hidden" id="ratios-tab-pane" role="tabpanel"
+                  aria-labelledby="ratios-tab" tabindex="0">
+
+                  <div class="table-responsive">
+                    <table class="table whitespace-nowrap table-borderless min-w-full">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="text-start">Ratios</th>
+                          <th scope="col" class="text-start">2022FY</th>
+                          <th scope="col" class="text-start">2023FY</th>
+                          <th scope="col" class="text-start">Change</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row" class="text-start">P/E</th>
+                          <td>3.2</td>
+                          <td>12.8</td>
+
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Price to Book</th>
+                          <td>#29.2</td>
+                          <td>1.9</td>
+
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">EV/EBITDA</th>
+                          <td>10.3</td>
+                          <td>7.8</td>
+
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">EV/FCFF</th>
+                          <td>-12.6</td>
+                          <td>-7.4</td>
+                          <td><span class="badge bg-danger  text-white">-41.5%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Net Debt / EBITDA </th>
+                          <td>2.7</td>
+                          <td>2.6</td>
+                          <td><span class="badge bg-danger  text-white"> -4.1%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Net Debt / FCFF </th>
+                          <td>-3.5</td>
+                          <td>-2.4</td>
+                          <td><span class="badge bg-danger  text-white">- 29.7% </span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start"> ROA </th>
+                          <td>4.0</td>
+                          <td>3.1</td>
+                          <td><span class="badge bg-danger  text-white">-21.0%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start"> ROE </th>
+                          <td>17.4</td>
+                          <td>14.5</td>
+                          <td><span class="badge bg-danger  text-white">-16.9%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Current Ratio</th>
+                          <td>1.2</td>
+                          <td>1.2</td>
+                          <td><span class="badge bg-success  text-white">2.0%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Quick Ratio</th>
+                          <td>0.8</td>
+                          <td>0.9</td>
+                          <td><span class="badge bg-success  text-white">12.5%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Cash Ratio</th>
+                          <td>0.3</td>
+                          <td>0.4</td>
+                          <td><span class="badge bg-success  text-white">29.0%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Total Debt / Total Assets </th>
+                          <td>36.5</td>
+                          <td>39.5</td>
+                          <td><span class="badge bg-success  text-white">8.3%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Leverage Ratio</th>
+                          <td>75.0</td>
+                          <td>76.9</td>
+                          <td><span class="badge bg-success  text-white">2.5%</span></td>
+                        </tr>
+                        <tr>
+                          <th scope="row" class="text-start">Cash / Market Cap </th>
+                          <td>-12.6</td>
+                          <td>0.4</td>
+                          <td><span class="badge bg-danger  text-white">-737.0%</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+
+                </div>
+              </div>
+              <div class="tab-pane fade !p-0 !border-0 hidden" id="net-debt-tab-pane" role="tabpanel"
+                aria-labelledby="net-debt-tab" tabindex="0">
+                <div class="grid grid-cols-12 gap-x-6">
+                  <div class="xl:col-span-6 col-span-12">
+                    <div class="box custom-box">
+                      <div class="box-header">
+                        <div class="box-title">ARCLK Net Debt Analysis</div>
+                      </div>
+                      <div class="box-body">
+                        <div id="column-basic"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade !p-0 !border-0 hidden" id="price-tab-pane" role="tabpanel"
+                  aria-labelledby="price-tab" tabindex="0">
+                  <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
+
+                    <h4>Price Analysis</h4>
+                  </div>
+                </div>
+                <div class="tab-pane fade !p-0 !border-0 hidden" id="balance-sheet-tab-pane" role="tabpanel"
+                  aria-labelledby="balance-sheet-tab" tabindex="0">
+                  <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
+
+                    <h4>Balance Sheet</h4>
+                  </div>
+                </div>
+                <div class="tab-pane fade !p-0 !border-0 hidden" id="income-statement-tab-pane" role="tabpanel"
+                  aria-labelledby="income-statement-tab" tabindex="0">
+                  <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
+
+                    <h4>Income Statement</h4>
+                  </div>
+                </div>
+                <div class="tab-pane fade !p-0 !border-0 hidden" id="cashflow-statement-tab-pane" role="tabpanel"
+                  aria-labelledby="cashflow-statement-tab" tabindex="0">
+                  <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
+
+                    <h4>Cash Flow Statement</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End::row-1 -->
+</div>
+
+{% endblock %} {% block scripts %}
+
+<!-- Gallery JS -->
+<script src="{% static 'assets/libs/glightbox/js/glightbox.min.js'%}"></script>
+
+<!-- Internal Profile JS -->
+<script src="{% static 'assets/js/profile.js'%}"></script>
+
+<!-- Apex Charts JS -->
+<script src="{% static 'assets/libs/apexcharts/apexcharts.min.js'%}"></script>
+
+<!-- Internal Apex-Column-Charts JS -->
+<script src="{% static 'assets/js/apexcharts-column.js'%}"></script>
+
+{% endblock %}
