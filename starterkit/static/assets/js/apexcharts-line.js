@@ -35,10 +35,12 @@
                 160.7, 156.4, 160.3, 166.0, 156.0, 149.4, 152.5] 
         }],
         chart: {
-            height: 460,
+            height: 600,
             type: 'line',
             zoom: {
-                enabled: true
+                enabled: true,
+                type: 'x', // Yalnızca x ekseni üzerinde yakınlaşma
+                autoScaleYaxis: true // Yakınlaştırma yaparken y eksenini otomatik olarak ölçeklendir
             }
         },
         colors: ['#845adf'],
@@ -47,7 +49,7 @@
         },
         stroke: {
             curve: 'straight',
-            width: 3,
+            width: 4,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -75,7 +77,8 @@
                     fontWeight: 600,
                     cssClass: 'apexcharts-xaxis-label',
                 },
-            }
+            },
+            tickAmount: 20
         },
         yaxis: {
             labels: {
@@ -113,7 +116,9 @@
             height: 460,
             type: 'line',
             zoom: {
-                enabled: true
+                enabled: true,
+                type: 'x', // Yalnızca x ekseni üzerinde yakınlaşma
+                autoScaleYaxis: true 
             }
         },
         colors: ['#845adf'],
@@ -122,7 +127,7 @@
         },
         stroke: {
             curve: 'straight',
-            width: 3,
+            width: 4,
         },
         grid: {
             borderColor: '#f2f5f7',
@@ -150,7 +155,8 @@
                     fontWeight: 600,
                     cssClass: 'apexcharts-xaxis-label',
                 },
-            }
+            },
+            tickAmount: 20
         },
         yaxis: {
             labels: {

@@ -1,9 +1,6 @@
-import pymongo
 from django.shortcuts import render
-from pymongo import MongoClient
 from db_connection import get_db
 from .models import hissekar
-from django.core.paginator import Paginator
 
 # Create your views here.
 def index (request): 
