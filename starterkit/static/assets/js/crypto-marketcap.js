@@ -1,36 +1,3 @@
-const paginationLinks = document.querySelectorAll(".ti-pagination a");
-const currentPageElement = document.querySelector(".ti-pagination .active a");
-
-const updatePagination = (pageNumber) => {
-  // Sayfa numarasına göre aktif öğeyi güncelleyin
-  currentPageElement.textContent = pageNumber;
-  currentPageElement.parentElement.classList.remove("active");
-  document.querySelector(`.ti-pagination .page-item:nth-child(${pageNumber})`).classList.add("active");
-
-  // Sayfa içeriğini güncelleyin (burada AJAX veya benzer bir yöntem kullanın)
-  // Örnek:
-  const link = document.createElement("a");
-      link.href = `#page-${pageNumber}`;
-      link.textContent = pageNumber;
-      pagination.appendChild(link);
-};
-
-paginationLinks.forEach((link) => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    const pageNumber = parseInt(link.textContent);
-
-    if (pageNumber === currentPageElement.textContent) {
-      return;
-    }
-
-    updatePagination(pageNumber);
-  });
-});
-
-// İlk sayfayı varsayılan olarak etkinleştirin
-updatePagination(parseInt(currentPageElement.textContent));
 
 (function () {
   "use strict";

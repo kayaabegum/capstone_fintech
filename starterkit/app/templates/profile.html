@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="p-6">
-                    <p class="text-[.9375rem] mb-2 me-6 font-semibold">Yönetim Kurulu </p>
+                    <p class="text-[.9375rem] mb-2 me-6 font-semibold">Yönetim Kurulu: </p>
                     <ul class="list-group">
                         <li class="list-group-item">
                             <div class="sm:flex items-start">
@@ -141,38 +141,38 @@
                             class="!p-4 border-b dark:border-defaultborder/10 border-dashed md:flex items-center justify-between">
                             <nav class="-mb-0.5 sm:flex md:space-x-6 rtl:space-x-reverse pb-2">
                                 <a class="w-full sm:w-auto flex active hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
-                                    href="javascript:void(0);" id="company-info-tab"
+                                    href="javascript:void(1);" id="company-info-tab"
                                     data-hs-tab="#company-info-tab-pane" aria-controls="company-info-tab-pane">
                                     <i class="ri-building-line align-middle inline-block me-1"></i>Company Information
                                 </a>
 
                                 <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
-                                    href="javascript:void(0);" id="profitability-tab"
+                                    href="javascript:void(2);" id="profitability-tab"
                                     data-hs-tab="#profitability-tab-pane" aria-controls="profitability-tab-pane">
                                     <i class="ri-bar-chart-2-line align-middle inline-block me-1"></i>Profitability
                                     Measurements
                                 </a>
 
                                 <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
-                                    href="javascript:void(0);" id="ratios-tab" data-hs-tab="#ratios-tab-pane"
+                                    href="javascript:void(3);" id="ratios-tab" data-hs-tab="#ratios-tab-pane"
                                     aria-controls="ratios-tab-pane">
                                     <i class="ri-calculator-line align-middle inline-block me-1"></i>Ratios
                                 </a>
 
                                 <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
-                                    href="javascript:void(0);" id="net-debt-tab" data-hs-tab="#net-debt-tab-pane"
+                                    href="javascript:void(4);" id="net-debt-tab" data-hs-tab="#net-debt-tab-pane"
                                     aria-controls="net-debt-tab-pane">
                                     <i class="ri-pie-chart-line align-middle inline-block me-1"></i>Net Debt Analysis
                                 </a>
 
                                 <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
-                                    href="javascript:void(0);" id="price-tab" data-hs-tab="#price-tab-pane"
+                                    href="javascript:void(5);" id="price-tab" data-hs-tab="#price-tab-pane"
                                     aria-controls="price-tab-pane">
                                     <i class="ri-coin-line align-middle inline-block me-1"></i>Price Analysis
                                 </a>
 
                                 <a class="w-full sm:w-auto flex hs-tab-active:font-semibold hs-tab-active:text-white hs-tab-active:bg-primary rounded-md py-2 px-4 text-primary text-sm"
-                                    href="javascript:void(0);" id="balance-sheet-tab"
+                                    href="javascript:void(6);" id="balance-sheet-tab"
                                     data-hs-tab="#balance-sheet-tab-pane" aria-controls="balance-sheet-tab-pane">
                                     <i class="ri-file-list-3-line align-middle inline-block me-1"></i>Balance Sheet
                                 </a>
@@ -193,233 +193,316 @@
                         <div class=" !p-4">
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane show active fade !p-0 !border-0" id="company-info-tab-pane"
-                                    role="tabpanel" aria-labelledby="company-info-tab" tabindex="0">
-
-                                    <h4>Company Informations
-                                    </h4>
+                                    role="tabpanel" aria-labelledby="company-info-tab" tabindex="1">
+                                    <div class="box-title">
+                                        <h4>Company Informations
+                                        </h4>
+                                    </div>
+                                    <div class="box-body">
+                                        <h5>TBD</h5>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade !p-0 !border-0 hidden !rounded-md" id="profitability-tab-pane"
-                                    role="tabpanel" aria-labelledby="profitability-tab" tabindex="0">
+                                    role="tabpanel" aria-labelledby="profitability-tab" tabindex="2">
                                     <div class="box-body">
                                         <div class="table-responsive">
 
                                             <div class="box-title">
 
-                                                <table class="table whitespace-nowrap table-borderless min-w-full">
-                                                    <thead>
-                                                        <tr>
-
-                                                            <th scope="col" class="text-start">Indicator</th>
-                                                            <th scope="col" class="text-start">2022 FY</th>
-                                                            <th scope="col" class="text-start">2023 FY</th>
-                                                            <th scope="col" class="text-start">Change</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tbody>
-                                                        <tr>
-
-                                                            <th scope="row" class="text-start">Revenue</th>
-                                                            {% for h in hissekar%}
-                                                            <td>₺{{ h.revenue }}</td>
-                                                            {%endfor%}
-
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" class="text-start">Gross Profit</th>
-                                                            {% for h in hissekar%}
-                                                            <td>₺{{h.gross_profit}}</td>
-                                                            {%endfor%}
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" class="text-start">Operating Income</th>
-
-                                                            <td>₺{{h.operating_income}}</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" class="text-start">NOPAT</th>
-
-                                                            <td>₺{{h.nopat}}</td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" class="text-start">EBIT </th>
-                                                            <td>₺{{h.ebit}}</td>
-                                                        <tr>
-                                                            <th scope="row" class="text-start">EBITDA </th>
-                                                            <td>₺{{h.ebitda}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" class="text-start"> Net Income </th>
-                                                            <td>₺{{h.net_income}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row" class="text-start"> FCFF </th>
-                                                            <td>₺ {{h.fcff}}</td>
-                                                        </tr>
-
-                                                    </tbody>
-
-
-                                                    </tbody>
-                                                </table>
-
+                                                <h4>ARCLK's Profitability Measurements</h4>
                                             </div>
+                                            <table class="table whitespace-nowrap table-borderless min-w-full">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th scope="col" class="text-start">Indicator</th>
+                                                        <th scope="col" class="text-start">2022 FY</th>
+                                                        <th scope="col" class="text-start">2023 FY</th>
+                                                        <th scope="col" class="text-start">Change</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tbody>
+                                                    <tr>
+
+                                                        <th scope="row" class="text-start">Revenue</th>
+                                                        <td>₺257.172,0
+                                                        </td>
+                                                        <td>₺257.104,0
+                                                        </td>
+                                                        <td>0,0%
+                                                        </td>
+
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Gross Profit</th>
+
+                                                        <td>₺68.670,5
+                                                        </td>
+                                                        <td>₺75.378,0
+                                                        </td>
+                                                        <td>9,8%
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">Operating Income</th>
+
+                                                        <td>₺9.401,4
+                                                        </td>
+                                                        <td>₺10.157,7
+                                                        </td>
+                                                        <td>8,0%
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">NOPAT</th>
+
+                                                        <td>₺148.427,2
+                                                        </td>
+                                                        <td>₺8.711,9
+                                                        </td>
+                                                        <td>42,4%
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">EBIT </th>
+                                                        <td>₺197.902,9
+                                                        </td>
+                                                        <td>₺11.615,9
+                                                        </td>
+                                                        <td>42,4%
+                                                        </td>
+                                                    <tr>
+                                                        <th scope="row" class="text-start">EBITDA </th>
+                                                        <td>₺16.220,3
+                                                        </td>
+                                                        <td>₺20.330,9
+                                                        </td>
+                                                        <td>25,3%
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start"> Net Income </th>
+                                                        <td>₺6.285,5
+                                                        </td>
+                                                        <td>₺7.667,4
+                                                        </td>
+                                                        <td>22,0%
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" class="text-start"> FCFF </th>
+                                                        <td>-₺12.747,0
+                                                        </td>
+                                                        <td>-₺21.787,0
+                                                        </td>
+                                                        <td>70,9%
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+
+
+                                                </tbody>
+                                            </table>
 
                                         </div>
 
                                     </div>
-                                </div>
-
-                                <div class="tab-pane fade !p-0 !border-0 hidden" id="ratios-tab-pane" role="tabpanel"
-                                    aria-labelledby="ratios-tab" tabindex="0">
-
-                                    <div class="table-responsive">
-                                        <table class="table whitespace-nowrap table-borderless min-w-full">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" class="text-start">Ratios</th>
-                                                    <th scope="col" class="text-start">2022FY</th>
-                                                    <th scope="col" class="text-start">2023FY</th>
-                                                    <th scope="col" class="text-start">Change</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row" class="text-start">P/E</th>
-                                                    <td>3.2</td>
-                                                    <td>12.8</td>
-
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Price to Book</th>
-                                                    <td>#29.2</td>
-                                                    <td>1.9</td>
-
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">EV/EBITDA</th>
-                                                    <td>10.3</td>
-                                                    <td>7.8</td>
-
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">EV/FCFF</th>
-                                                    <td>-12.6</td>
-                                                    <td>-7.4</td>
-                                                    <td><span class="badge bg-danger  text-white">-41.5%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Net Debt / EBITDA </th>
-                                                    <td>2.7</td>
-                                                    <td>2.6</td>
-                                                    <td><span class="badge bg-danger  text-white"> -4.1%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Net Debt / FCFF </th>
-                                                    <td>-3.5</td>
-                                                    <td>-2.4</td>
-                                                    <td><span class="badge bg-danger  text-white">- 29.7% </span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start"> ROA </th>
-                                                    <td>4.0</td>
-                                                    <td>3.1</td>
-                                                    <td><span class="badge bg-danger  text-white">-21.0%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start"> ROE </th>
-                                                    <td>17.4</td>
-                                                    <td>14.5</td>
-                                                    <td><span class="badge bg-danger  text-white">-16.9%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Current Ratio</th>
-                                                    <td>1.2</td>
-                                                    <td>1.2</td>
-                                                    <td><span class="badge bg-success  text-white">2.0%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Quick Ratio</th>
-                                                    <td>0.8</td>
-                                                    <td>0.9</td>
-                                                    <td><span class="badge bg-success  text-white">12.5%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Cash Ratio</th>
-                                                    <td>0.3</td>
-                                                    <td>0.4</td>
-                                                    <td><span class="badge bg-success  text-white">29.0%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Total Debt / Total Assets </th>
-                                                    <td>36.5</td>
-                                                    <td>39.5</td>
-                                                    <td><span class="badge bg-success  text-white">8.3%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Leverage Ratio</th>
-                                                    <td>75.0</td>
-                                                    <td>76.9</td>
-                                                    <td><span class="badge bg-success  text-white">2.5%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-start">Cash / Market Cap </th>
-                                                    <td>-12.6</td>
-                                                    <td>0.4</td>
-                                                    <td><span class="badge bg-danger  text-white">-737.0%</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
 
                                 </div>
                             </div>
-                            <div class="tab-pane fade !p-0 !border-0 hidden" id="net-debt-tab-pane" role="tabpanel"
-                                aria-labelledby="net-debt-tab" tabindex="0">
-                                <div class="grid grid-cols-12 gap-x-6">
+
+                            <div class="tab-pane fade !p-0 !border-0 hidden" id="ratios-tab-pane" role="tabpanel"
+                                aria-labelledby="ratios-tab" tabindex="3">
+
+                                <div class="table-responsive">
+                                    <div class="box-title">
+                                        <h4>ARCLK's Profitability Measurements</h4>
+                                    </div>
+                                    <table class="table whitespace-nowrap table-borderless min-w-full">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="text-start">Ratios</th>
+                                                <th scope="col" class="text-start">2022FY</th>
+                                                <th scope="col" class="text-start">2023FY</th>
+                                                <th scope="col" class="text-start">Change</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" class="text-start">P/E</th>
+                                                <td>3.2</td>
+                                                <td>12.8</td>
+
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Price to Book</th>
+                                                <td>#29.2</td>
+                                                <td>1.9</td>
+
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">EV/EBITDA</th>
+                                                <td>10.3</td>
+                                                <td>7.8</td>
+
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">EV/FCFF</th>
+                                                <td>-12.6</td>
+                                                <td>-7.4</td>
+                                                <td><span class="badge bg-danger  text-white">-41.5%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Net Debt/EBITDA</th>
+                                                <td>2.7</td>
+                                                <td>2.6</td>
+                                                <td><span class="badge bg-danger  text-white"> -4.1%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Net Debt/FCFF</th>
+                                                <td>-3.5</td>
+                                                <td>-2.4</td>
+                                                <td><span class="badge bg-danger  text-white">- 29.7% </span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">ROA</th>
+                                                <td>4.0</td>
+                                                <td>3.1</td>
+                                                <td><span class="badge bg-danger  text-white">-21.0%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">ROE</th>
+                                                <td>17.4</td>
+                                                <td>14.5</td>
+                                                <td><span class="badge bg-danger  text-white">-16.9%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Current Ratio</th>
+                                                <td>1.2</td>
+                                                <td>1.2</td>
+                                                <td><span class="badge bg-success  text-white">2.0%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Quick Ratio</th>
+                                                <td>0.8</td>
+                                                <td>0.9</td>
+                                                <td><span class="badge bg-success  text-white">12.5%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Cash Ratio</th>
+                                                <td>0.3</td>
+                                                <td>0.4</td>
+                                                <td><span class="badge bg-success  text-white">29.0%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Total Debt/Total Assets</th>
+                                                <td>36.5</td>
+                                                <td>39.5</td>
+                                                <td><span class="badge bg-success  text-white">8.3%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Leverage Ratio</th>
+                                                <td>75.0</td>
+                                                <td>76.9</td>
+                                                <td><span class="badge bg-success  text-white">2.5%</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="text-start">Cash/Market Cap</th>
+                                                <td>-12.6</td>
+                                                <td>0.4</td>
+                                                <td><span class="badge bg-danger  text-white">-737.0%</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade !p-0 !border-0 hidden" id="net-debt-tab-pane" role="tabpanel"
+                            aria-labelledby="net-debt-tab" tabindex="4">
+                            <div class="grid grid-cols-12 gap-x-6">
+                                <div class="xl:col-span-6 col-span-12">
+                                    <div class="box custom-box">
+                                        <div class="box-header">
+                                            <div class="box-title">ARCLK Net Debt Analysis</div>
+                                        </div>
+                                        <div class="box-body">
+                                            <div id="column-basic"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade !p-0 !border-0 hidden" id="price-tab-pane" role="tabpanel"
+                                aria-labelledby="price-tab" tabindex="5">
+                                <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
                                     <div class="xl:col-span-6 col-span-12">
                                         <div class="box custom-box">
                                             <div class="box-header">
-                                                <div class="box-title">ARCLK Net Debt Analysis</div>
+                                                <div class="box-title">ARCLK Price Analysis in TL</div>
                                             </div>
                                             <div class="box-body">
-                                                <div id="column-basic"></div>
+                                                <div id="line-chart"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="xl:col-span-6 col-span-12">
+                                        <div class="box custom-box">
+                                            <div class="box-header">
+                                                <div class="box-title">ARCLK Price Analysis in USD</div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div id="line-chart-2"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade !p-0 !border-0 hidden" id="price-tab-pane" role="tabpanel"
-                                    aria-labelledby="price-tab" tabindex="0">
-                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
+                            </div>
 
-                                        <h4>Price Analysis</h4>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade !p-0 !border-0 hidden" id="balance-sheet-tab-pane"
-                                    role="tabpanel" aria-labelledby="balance-sheet-tab" tabindex="0">
-                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
 
-                                        <h4>Balance Sheet</h4>
+                            <div class="tab-pane fade !p-0 !border-0 hidden" id="balance-sheet-tab-pane" role="tabpanel"
+                                aria-labelledby="balance-sheet-tab" tabindex="6">
+                                <div class="grid  sm:gap-x-6 gap-y-6">
+                                    <div class="box custom-box">
+                                        <div class="box-title">
+                                            <h4> ARCLK's Balance Sheet</h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <h5>TBD</h5>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade !p-0 !border-0 hidden" id="income-statement-tab-pane"
-                                    role="tabpanel" aria-labelledby="income-statement-tab" tabindex="0">
-                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
-
-                                        <h4>Income Statement</h4>
+                                    role="tabpanel" aria-labelledby="income-statement-tab" tabindex="7">
+                                    <div class="grid sm:gap-x-6 gap-y-6">
+                                        <div class="box-title">
+                                            <h4> ARCLK's Income Statement</h4>
+                                        </div>
+                                        <div class="box-body">
+                                            <h5>TBD</h5>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="tab-pane fade !p-0 !border-0 hidden" id="cashflow-statement-tab-pane"
-                                    role="tabpanel" aria-labelledby="cashflow-statement-tab" tabindex="0">
-                                    <div class="grid grid-cols-12 sm:gap-x-6 gap-y-6">
+                                    <div class="tab-pane fade !p-0 !border-0 hidden" id="cashflow-statement-tab-pane"
+                                        role="tabpanel" aria-labelledby="cashflow-statement-tab" tabindex="8">
+                                        <div class="grid sm:gap-x-6 gap-y-6">
+                                            <div class="box-title">
+                                                <h4> ARCLK's Cash Flow Statement</h4>
 
-                                        <h4>Cash Flow Statement</h4>
+                                            </div>
+                                            <div class="box-body">
+                                                <h5>TBD</h5>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -429,8 +512,7 @@
             </div>
         </div>
     </div>
-</div>
-<!--End::row-1 -->
+    <!--End::row-1 -->
 </div>
 
 {% endblock %} {% block scripts %}
@@ -446,5 +528,12 @@
 
 <!-- Internal Apex-Column-Charts JS -->
 <script src="{% static 'assets/js/apexcharts-column.js'%}"></script>
+<!-- Used In Zoomable TIme Series Chart -->
+<script src="{% static 'assets/js/dataseries.js'%}"></script>
+
+<script src="{% static 'assets/js/apexcharts-line.js'%}"></script>
+<!-- Apex Charts JS -->
+
+
 
 {% endblock %}
