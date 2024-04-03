@@ -55,7 +55,7 @@
             borderColor: '#f2f5f7',
         },
         title: {
-            text: 'ARCLK Price Analysis by Month',
+            text: 'ARCLK Stock Price TL',
             align: 'left',
             style: {
                 fontSize: '13px',
@@ -133,7 +133,7 @@
             borderColor: '#f2f5f7',
         },
         title: {
-            text: 'ARCLK Price Analysis by Month',
+            text: 'ARCLK Stock Price USD',
             align: 'left',
             style: {
                 fontSize: '13px',
@@ -305,11 +305,5 @@
    */   };
     var chart = new ApexCharts(document.querySelector("#zoom-chart"), options);
     chart.render();
-
-    
-    
-    
-  
-    
 
 })();
