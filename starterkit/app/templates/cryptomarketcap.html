@@ -59,10 +59,10 @@
                                 <li><a class="ti-dropdown-item" href="javascript:void(0);">Market Cap</a></li>
                                 <li><a class="ti-dropdown-item" href="javascript:void(0);">Last Price</a></li>
                                 <li><a class="ti-dropdown-item" href="javascript:void(0);">52 Week High</a></li>
-                                <li><a class="ti-dropdown-item" href="javascript:void(0);">52 Week High</a></li>
+                                <li><a class="ti-dropdown-item" href="javascript:void(0);">52 Week Low</a></li>
                                 <li><a class="ti-dropdown-item" href="javascript:void(0);">P/E</a></li>
                                 <li><a class="ti-dropdown-item" href="javascript:void(0);">EV/EBITDA</a></li>
-                                <li><a class="ti-dropdown-item" href="javascript:void(0);">Net Debt</a></li>
+                                <li><a class="ti-dropdown-item" href="javascript:void(0);">Total Debt</a></li>
                                 <li><a class="ti-dropdown-item" href="javascript:void(0);">FCF</a></li>
                             </ul>
                         </div>
@@ -86,7 +86,7 @@
                                     <th scope="col" class="text-start">52 Week Low</th>
                                     <th scope="col" class="text-start">P/E</th>
                                     <th scope="col" class="text-start">EV/EBITDA</th>
-                                    <th scope="col" class="text-start">Net Debt</th>
+                                    <th scope="col" class="text-start">Total Debt</th>
                                     <th scope="col" class="text-start">FCF</th>
 
                                 </tr>
@@ -103,7 +103,7 @@
                                         <div class="flex items-center gap-2">
                                             <div class="leading-none">
                                                 <span class="avatar avatar-xs avatar-rounded">
-                                                    <img src="{% static 'assets/images/company-logos/' %}{{ symbol|slice:"0:5" }}.png"
+                                                    <img src="{% static 'assets/images/company-logos/' %}{{ symbol|slice:'0:5' }}.png"
                                                         alt="">
                                                 </span>
                                             </div>
@@ -134,7 +134,7 @@
                                         <span class="font-semibold">{{ data.ev_ebitda }}</span> 
                                     </td>
                                     <td>
-                                        <span class="font-semibold">{{ data.net_debt }}</span>
+                                        <span class="font-semibold">₺{{ data.total_debt }}</span>
                                     </td>
                                     <td>
                                         <span class="font-semibold">₺{{ data.free_cash_flow }}</span>

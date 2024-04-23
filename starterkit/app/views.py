@@ -31,6 +31,22 @@ def format_free_cash_flow(free_cash_flow):
     else:
         return "{:.2f}B".format(billion_value)
     
+def format_total_debt(total_debt):
+    if total_debt is None:
+        return None
+
+    # Veriyi mutlak değere çevir
+    abs_value = abs(total_debt)
+
+    # Milyar birimine çevir
+    billion_value = abs_value / 10**9
+
+    # Negatif mi pozitif mi olduğuna bakarak uygun biçimde formatla
+    if total_debt < 0:
+        return "- {:.2f}B".format(billion_value)
+    else:
+        return "{:.2f}B".format(billion_value)
+    
 def cryptomarketcap(request):
     # Hisse senedi sembolleri
     symbols = ["ALARK.IS", "ASELS.IS", "ASTOR.IS", "BIMAS.IS", "BRSAN.IS", "EKGYO.IS", "ENKAI.IS", "EREGL.IS", "FROTO.IS","GUBRF.IS", "HEKTS.IS", "KCHOL.IS",
@@ -72,6 +88,9 @@ def cryptomarketcap(request):
         # Free Cash Flow
         free_cash_flow = ticker.info.get("freeCashflow")
 
+        #totaaldebt
+        total_debt = ticker.info.get("totalDebt")
+
         # Her hisse senedi için verileri sözlüğe ekleyin
         stock_data[symbol] = {
             "current_price": current_price,
@@ -81,6 +100,7 @@ def cryptomarketcap(request):
             "pe_ratio": pe_ratio,
             "ev_ebitda": ev_ebitda,
             "free_cash_flow": free_cash_flow,
+            "total_debt": total_debt
             # Diğer verileri ekleyin
         }
         formatted_stock_data = {
@@ -92,6 +112,7 @@ def cryptomarketcap(request):
             "pe_ratio": data["pe_ratio"],
             "ev_ebitda": "{:.2f}".format(data["ev_ebitda"]) if data["ev_ebitda"] is not None else None,  # İki ondalık hane için formatlama
             "free_cash_flow": format_free_cash_flow(data["free_cash_flow"]), # Formatlanmış Free Cash Flow değeri
+            "total_debt": format_total_debt(data["total_debt"]),
         }
         for symbol, data in stock_data.items()
     }
@@ -111,15 +132,91 @@ def apexmixedcharts (request):
     return render(request, 'apexmixedcharts.html')
 
 def profile(request):
-    db = get_db()
-    collection = db['hissekar']
-    pipeline = []
-    if request.GET.get('year'):
-        year = request.GET['year']
-        pipeline.append({'$match': {'year': year}})
-    hissekar = collection.aggregate(pipeline)
+    # Hisse senedi sembollerini ve etiketlerini tanımlayın
+    stocks = {
+        "ARCLK.IS": "ARCLK",
+        # Diğer hisse senetlerini buraya ekleyin
+    }
+
+    # Tüm hisse senedi verilerini saklayacak bir sözlük oluşturun
+    stock_data = {}
+
+    # Her bir hisse senedi için verileri alın
+    for symbol, label in stocks.items():
+        # Ticker objesini oluşturun
+        ticker = yf.Ticker(symbol)
+
+        # Geçerli P/E oranını alın
+        pe_ratio = ticker.info.get("forwardPE", "N/A")
+
+        # Geçerli Price to Book oranını alın
+        price_to_book = ticker.info.get("priceToBook", "N/A")
+
+
+        total_revenue = ticker.info.get("totalRevenue", "N/A")
+        total_debt = ticker.info.get("totalDebt", "N/A")
+        
+        if total_revenue is not None and total_debt is not None:
+            total_debt_to_total_assets = total_debt / total_revenue
+
+        #fcff
+        free_cash_flow = ticker.info.get("operatingCashflow", "N/A")
+
+        # EV ve EBITDA değerleri
+        enterprise_value = ticker.info.get("enterpriseValue")
+        ebitda = ticker.info.get("ebitda")
+
+        # EV/EBITDA oranı
+        ev_ebitda = None
+        if enterprise_value is not None and ebitda is not None and ebitda != 0:
+            ev_ebitda = enterprise_value / ebitda
+
+        # Geçerli EV/EBITDA oranını alın
+        ev_ebitda = ticker.info.get("enterpriseToEbitda", "N/A")
+
+        ev_fcff = None
+        if enterprise_value is not None and free_cash_flow is not None:
+            ev_fcff = enterprise_value / free_cash_flow    
+        # Geçerli EV/FCFF oranını alın
     
-    return render(request, 'profile.html', {'hissekar': hissekar})
+        # Geçerli ROA oranını alın
+        roa = ticker.info.get("returnOnAssets", "N/A")
+
+        # Geçerli ROE oranını alın
+        roe = ticker.info.get("returnOnEquity", "N/A")
+
+        # Geçerli Current Ratio'yu alın
+        current_ratio = ticker.info.get("currentRatio", "N/A")
+
+        # Geçerli Quick Ratio'yu alın
+        quick_ratio = ticker.info.get("quickRatio", "N/A")
+
+        #totalcash / marketcap
+
+        total_cash = ticker.info.get("totalCash", "N/A")
+        marketcap = ticker.info.get("marketCap", "N/A")
+
+        if total_cash is not None and marketcap is not None:
+            cash_to_marketcap = total_cash / marketcap
+        
+
+        # Her hisse senedi için verileri sözlüğe ekleyin
+        stock_data[label] = {
+            "pe_ratio": pe_ratio,
+            "price_to_book": price_to_book,
+            "ev_ebitda": ev_ebitda,
+            "ev_fcff": ev_fcff,
+            "roa": roa,
+            "roe": roe,
+            "current_ratio": current_ratio,
+            "quick_ratio": quick_ratio,
+            
+            "total_debt_to_total_assets": total_debt_to_total_assets,
+            "cash_market_cap": cash_to_marketcap,
+        }
+
+    # Verileri şablona gönderin
+    return render(request, 'profile.html', {'stock_data': stock_data})
 
 def tables (request): 
     return render(request, 'tables.html')
