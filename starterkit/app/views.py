@@ -240,9 +240,10 @@ def profile(request, symbol):
 
         # CEO ve CFO'yu kontrol etmek için döngü
         for officer in company_officers:
-            if "CEO" in officer.get("title", ""):
+            title = officer.get("title", "").lower()  # Unvanı küçük harfe dönüştür
+            if "ceo" in title or "chief executive" in title or "gm" in title or "general manager" in title:
                 ceo = officer.get("name", "N/A")
-            elif "Chief Financial Officer" in officer.get("title", ""):
+            elif "cfo" in title or "chief financial manager" in title or "head of financial" in title:
                 cfo = officer.get("name", "N/A")
 
         # Hisse senedi için verileri sözlüğe ekleyin
