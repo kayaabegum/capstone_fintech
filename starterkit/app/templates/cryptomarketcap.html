@@ -107,7 +107,10 @@
                                                         alt="">
                                                 </span>
                                             </div>
-                                            <div class="font-semibold"><a href="javascript:void(0);">{{ symbol|slice:"0:5" }}</a></div>
+                                            <div class="font-semibold">
+                                                <!-- Yeni satır: Profil sayfasına yönlendirme bağlantısı -->
+                                                <a href="{% url 'profile' symbol %}">{{ symbol|slice:"0:5" }}</a>
+                                            </div>
                                         </div>
                                     </td>
                                     <td>
@@ -119,9 +122,9 @@
                                     <td>
                                         <span class="font-semibold">₺{{ data.high_52w }}</span>
                                         {% if data.high_52w > data.low_52w %}
-                                            <span class="ml-1" style="color: rgb(1, 160, 1);"><i class="ri-arrow-up-s-line"></i></span>
+                                        <span class="ml-1" style="color: rgb(1, 160, 1);"><i class="ri-arrow-up-s-line"></i></span>
                                         {% elif data.high_52w < data.low_52w %}
-                                            <span class="ml-1" style="color: red;"><i class="ri-arrow-down-s-line"></i></span>
+                                        <span class="ml-1" style="color: red;"><i class="ri-arrow-down-s-line"></i></span>
                                         {% endif %}
                                     </td>
                                     <td>
@@ -131,7 +134,7 @@
                                         <span class="font-semibold">{{ data.pe_ratio }}</span>
                                     </td>
                                     <td>
-                                        <span class="font-semibold">{{ data.ev_ebitda }}</span> 
+                                        <span class="font-semibold">{{ data.ev_ebitda }}</span>
                                     </td>
                                     <td>
                                         <span class="font-semibold">₺{{ data.total_debt }}</span>

@@ -49,7 +49,7 @@ def format_total_debt(total_debt):
     
 def cryptomarketcap(request):
     # Hisse senedi sembolleri
-    symbols = ["ALARK.IS", "ASELS.IS", "ASTOR.IS", "BIMAS.IS", "BRSAN.IS", "EKGYO.IS", "ENKAI.IS", "EREGL.IS", "FROTO.IS","GUBRF.IS", "HEKTS.IS", "KCHOL.IS",
+    symbols = ["ARCLK.IS", "ALARK.IS", "ASELS.IS", "ASTOR.IS", "BIMAS.IS", "BRSAN.IS", "EKGYO.IS", "ENKAI.IS", "EREGL.IS", "FROTO.IS","GUBRF.IS", "HEKTS.IS", "KCHOL.IS",
     "KONTR.IS", "KOZAL.IS", "KRDMD.IS", "ODAS.IS", "OYAKC.IS",
     "PETKM.IS", "PGSUS.IS", "SAHOL.IS", "SASA.IS", "SISE.IS",
     "TCELL.IS", "THYAO.IS", "TOASO.IS", "TUPRS.IS"]
@@ -131,18 +131,24 @@ def gridtables (request):
 def apexmixedcharts (request): 
     return render(request, 'apexmixedcharts.html')
 
-def profile(request):
+def profile(request, symbol):
     # Hisse senedi sembollerini ve etiketlerini tanımlayın
     stocks = {
-        "ARCLK.IS": "ARCLK",
+        "ARCLK.IS": "ARCLK", "ALARK.IS": "ALARK", "ASELS.IS": "ASELS", "ASTOR.IS": "ASTOR", "BIMAS.IS": "BIMAS", "BRSAN.IS": "BRSAN","EKGYO.IS": "EKGYO",
+        "ENKAI.IS": "ENKAI","EREGL.IS": "EREGL", "FROTO.IS": "FROTO","GUBRF.IS": "GUBRF","HEKTS.IS": "HEKTS","KCHOL.IS": "KCHOL","KONTR.IS": "KONTR", 
+        "KOZAL.IS": "KOZAL","KRDMD.IS": "KRDMD","ODAS.IS": "ODAS","OYAKC.IS": "OYAKC","PETKM.IS": "PETKM",
+        "PGSUS.IS": "PGSUS","SAHOL.IS": "SAHOL","SASA.IS": "SASA","SISE.IS": "SISE", 
+        "TCELL.IS": "TCELL","THYAO.IS": "THYAO","TOASO.IS": "TOASO","TUPRS.IS": "TUPRS",
         # Diğer hisse senetlerini buraya ekleyin
     }
 
     # Tüm hisse senedi verilerini saklayacak bir sözlük oluşturun
     stock_data = {}
 
-    # Her bir hisse senedi için verileri alın
-    for symbol, label in stocks.items():
+    # İstenen hisse senedi için verileri alın
+    label = stocks.get(symbol)
+
+    if label:
         # Ticker objesini oluşturun
         ticker = yf.Ticker(symbol)
 
@@ -168,10 +174,24 @@ def profile(request):
         ev_ebitda = ticker.info.get("enterpriseToEbitda", "N/A")
 
         ev_fcff = None
-        if enterprise_value is not None and free_cash_flow is not None:
-            ev_fcff = enterprise_value / free_cash_flow    
+        if enterprise_value == "N/A" or free_cash_flow == "N/A":
+            enterprise_value = None
+            free_cash_flow = None
+
+        # Dönüştürülmüş enterprise_value ve free_cash_flow değerleri None değilse ve bir dize (str) değilse, kayan noktalı sayı (float) türüne dönüştür
+        if enterprise_value is not None and not isinstance(enterprise_value, float):
+            enterprise_value = float(enterprise_value)
+
+        if free_cash_flow is not None and not isinstance(free_cash_flow, float):
+            free_cash_flow = float(free_cash_flow)
+
+        # Eğer hem enterprise_value hem de free_cash_flow değerleri None değilse ve free_cash_flow 0'a eşit değilse, ev_fcff hesapla
+        if enterprise_value is not None and free_cash_flow is not None and free_cash_flow != 0:
+            ev_fcff = enterprise_value / free_cash_flow
+        else:
+            ev_fcff = None  
         # Geçerli EV/FCFF oranını alın
-    
+
         # Geçerli ROA oranını alın
         roa  = ticker.info.get("returnOnAssets", "N/A")
 
@@ -192,17 +212,41 @@ def profile(request):
             total_debt_to_total_assets1 = total_debt / total_revenue
             total_debt_to_total_assets = total_debt_to_total_assets1 * -1
 
-
         #fcf or totalcash / marketcap
-        #total_cash = ticker.info.get("totalCash", "N/A")
         marketcap = ticker.info.get("marketCap", "N/A")
 
         if free_cash_flow is not None and marketcap is not None:
             cash_to_marketcap = free_cash_flow / marketcap
         
+        # Şirket hakkında daha detaylı bilgileri alın
+        company_info = ticker.info
 
-        # Her hisse senedi için verileri sözlüğe ekleyin
-        stock_data[label] = {
+        # Şirketin adres bilgisini alın
+        address = company_info.get("address2")
+        city = company_info.get("city")
+        country = company_info.get("country")
+
+        # Şirketin iletişim bilgilerini alın
+        phone = company_info.get("phone")
+        website = company_info.get("website")
+
+        # Şirketin uzun açıklamasını alın
+        long_description = company_info.get("longBusinessSummary")
+
+        # Şirketin yöneticilerinin bilgilerini alın
+        company_officers = ticker.info.get("companyOfficers", [])
+        ceo = "N/A"
+        cfo = "N/A"
+
+        # CEO ve CFO'yu kontrol etmek için döngü
+        for officer in company_officers:
+            if "CEO" in officer.get("title", ""):
+                ceo = officer.get("name", "N/A")
+            elif "Chief Financial Officer" in officer.get("title", ""):
+                cfo = officer.get("name", "N/A")
+
+        # Hisse senedi için verileri sözlüğe ekleyin
+        stock_data = {
             "pe_ratio": pe_ratio,
             "price_to_book": price_to_book,
             "ev_ebitda": ev_ebitda,
@@ -211,23 +255,34 @@ def profile(request):
             "roe": roe,
             "current_ratio": current_ratio,
             "quick_ratio": quick_ratio,
-            
             "total_debt_to_total_assets": total_debt_to_total_assets,
             "cash_market_cap": cash_to_marketcap,
+
+            "address": address,
+            "city": city,
+            "country": country,
+            "phone": phone,
+            "website": website,
+            "long_description": long_description,
+            "ceo": ceo,
+            "cfo": cfo
         }
 
         # Verileri düzeltme
         if isinstance(roa, float):
-            stock_data[label]['roa'] = '{:.4f}'.format(roa * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 4 ondalık basamak gösteriyoruz
+            stock_data['roa'] = '{:.4f}'.format(roa * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 4 ondalık basamak gösteriyoruz
         if isinstance(roe, float):
-            stock_data[label]['roe'] = '{:.2f}'.format(roe * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 2 ondalık basamak gösteriyoruz
+            stock_data['roe'] = '{:.2f}'.format(roe * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 2 ondalık basamak gösteriyoruz
         if isinstance(cash_to_marketcap, float):
-            stock_data[label]['cash_market_cap'] = '{:.4f}'.format(cash_to_marketcap) # Sayıyı iki ondalık basamağa yuvarlıyoruz
+            stock_data['cash_market_cap'] = '{:.4f}'.format(cash_to_marketcap) # Sayıyı iki ondalık basamağa yuvarlıyoruz
             if cash_to_marketcap < 0:
-                stock_data[label]['cash_market_cap'] = stock_data[label]['cash_market_cap'].lstrip('-') # Eğer değer negatifse başındaki "-" işaretini kaldırıyoruz
-    # Verileri şablona gönderin
-    return render(request, 'profile.html', {'stock_data': stock_data})
+                stock_data['cash_market_cap'] = stock_data['cash_market_cap'].lstrip('-') # Eğer değer negatifse başındaki "-" işaretini kaldırıyoruz
 
+        # Verileri şablona gönderin
+        return render(request, 'profile.html', {'symbol': symbol, 'stock_data': stock_data})
+    else:
+        # Geçersiz sembol durumunda hata sayfasına yönlendirme
+        return render(request, 'error.html', {'error_message': 'Geçersiz sembol: {}'.format(symbol)})
 def tables (request): 
     return render(request, 'tables.html')
 
