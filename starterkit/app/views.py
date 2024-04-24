@@ -47,7 +47,7 @@ def format_total_debt(total_debt):
     else:
         return "{:.2f}B".format(billion_value)
     
-def cryptomarketcap(request):
+def marketcap(request):
     # Hisse senedi sembolleri
     symbols = ["ARCLK.IS", "ALARK.IS", "ASELS.IS", "ASTOR.IS", "BIMAS.IS", "BRSAN.IS", "EKGYO.IS", "ENKAI.IS", "EREGL.IS", "FROTO.IS","GUBRF.IS", "HEKTS.IS", "KCHOL.IS",
     "KONTR.IS", "KOZAL.IS", "KRDMD.IS", "ODAS.IS", "OYAKC.IS",
@@ -117,7 +117,7 @@ def cryptomarketcap(request):
         for symbol, data in stock_data.items()
     }
 
-    return render(request, 'cryptomarketcap.html', {'stock_data': formatted_stock_data})
+    return render(request, 'marketcap.html', {'stock_data': formatted_stock_data})
 
 def index (request): 
     return render(request, 'index.html')
@@ -243,7 +243,7 @@ def profile(request, symbol):
             title = officer.get("title", "").lower()  # Unvanı küçük harfe dönüştür
             if "ceo" in title or "chief executive" in title or "gm" in title or "general manager" in title:
                 ceo = officer.get("name", "N/A")
-            elif "cfo" in title or "chief financial manager" in title or "head of financial" in title:
+            elif "cfo" in title or "chief financial" in title or "head of financial" in title or "director of finance" in title or "financial director":
                 cfo = officer.get("name", "N/A")
 
         # Hisse senedi için verileri sözlüğe ekleyin
