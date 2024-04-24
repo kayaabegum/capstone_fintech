@@ -152,15 +152,8 @@ def profile(request):
         # Geçerli Price to Book oranını alın
         price_to_book = ticker.info.get("priceToBook", "N/A")
 
-
-        total_revenue = ticker.info.get("totalRevenue", "N/A")
-        total_debt = ticker.info.get("totalDebt", "N/A")
-        
-        if total_revenue is not None and total_debt is not None:
-            total_debt_to_total_assets = total_debt / total_revenue
-
         #fcff
-        free_cash_flow = ticker.info.get("operatingCashflow", "N/A")
+        free_cash_flow = ticker.info.get("freeCashflow", "N/A")
 
         # EV ve EBITDA değerleri
         enterprise_value = ticker.info.get("enterpriseValue")
@@ -180,7 +173,7 @@ def profile(request):
         # Geçerli EV/FCFF oranını alın
     
         # Geçerli ROA oranını alın
-        roa = ticker.info.get("returnOnAssets", "N/A")
+        roa  = ticker.info.get("returnOnAssets", "N/A")
 
         # Geçerli ROE oranını alın
         roe = ticker.info.get("returnOnEquity", "N/A")
@@ -191,13 +184,21 @@ def profile(request):
         # Geçerli Quick Ratio'yu alın
         quick_ratio = ticker.info.get("quickRatio", "N/A")
 
-        #totalcash / marketcap
+        #totaldebt/cash
+        total_revenue = ticker.info.get("totalRevenue", "N/A")
+        total_debt = ticker.info.get("totalDebt", "N/A")
+        
+        if total_revenue is not None and total_debt is not None:
+            total_debt_to_total_assets1 = total_debt / total_revenue
+            total_debt_to_total_assets = total_debt_to_total_assets1 * -1
 
-        total_cash = ticker.info.get("totalCash", "N/A")
+
+        #fcf or totalcash / marketcap
+        #total_cash = ticker.info.get("totalCash", "N/A")
         marketcap = ticker.info.get("marketCap", "N/A")
 
-        if total_cash is not None and marketcap is not None:
-            cash_to_marketcap = total_cash / marketcap
+        if free_cash_flow is not None and marketcap is not None:
+            cash_to_marketcap = free_cash_flow / marketcap
         
 
         # Her hisse senedi için verileri sözlüğe ekleyin
@@ -215,6 +216,15 @@ def profile(request):
             "cash_market_cap": cash_to_marketcap,
         }
 
+        # Verileri düzeltme
+        if isinstance(roa, float):
+            stock_data[label]['roa'] = '{:.4f}'.format(roa * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 4 ondalık basamak gösteriyoruz
+        if isinstance(roe, float):
+            stock_data[label]['roe'] = '{:.2f}'.format(roe * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 2 ondalık basamak gösteriyoruz
+        if isinstance(cash_to_marketcap, float):
+            stock_data[label]['cash_market_cap'] = '{:.4f}'.format(cash_to_marketcap) # Sayıyı iki ondalık basamağa yuvarlıyoruz
+            if cash_to_marketcap < 0:
+                stock_data[label]['cash_market_cap'] = stock_data[label]['cash_market_cap'].lstrip('-') # Eğer değer negatifse başındaki "-" işaretini kaldırıyoruz
     # Verileri şablona gönderin
     return render(request, 'profile.html', {'stock_data': stock_data})
 
