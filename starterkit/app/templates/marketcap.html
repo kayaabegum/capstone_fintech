@@ -122,10 +122,11 @@
                                     <td>
                                         <span class="font-semibold">₺{{ data.high_52w }}</span>
                                         {% if data.high_52w > data.low_52w %}
-                                        <span class="ml-1" style="color: rgb(1, 160, 1);"><i class="ri-arrow-up-s-line"></i></span>
-                                        {% elif data.high_52w < data.low_52w %}
-                                        <span class="ml-1" style="color: red;"><i class="ri-arrow-down-s-line"></i></span>
-                                        {% endif %}
+                                        <span class="ml-1" style="color: rgb(1, 160, 1);"><i
+                                                class="ri-arrow-up-s-line"></i></span>
+                                        {% elif data.high_52w < data.low_52w %} <span class="ml-1" style="color: red;">
+                                            <i class="ri-arrow-down-s-line"></i></span>
+                                            {% endif %}
                                     </td>
                                     <td>
                                         <span class="font-semibold">₺{{ data.low_52w }}</span>
@@ -159,9 +160,8 @@
 {% block scripts %}
 
 <!-- Apex Charts JS -->
-<script src="{% static 'assets/libs/apexcharts/apexcharts.min.js'%}"></script>0
-
 <!-- Crypto MarketCap JS -->
 <script src="{% static 'assets/js/crypto-marketcap.js'%}"></script>
+
 
 {% endblock %}

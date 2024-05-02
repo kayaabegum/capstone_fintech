@@ -1,5 +1,10 @@
 from django.shortcuts import render
 import yfinance as yf
+import pandas as pd
+import locale
+import plotly.graph_objects as go
+from plotly.io import to_html
+from datetime import datetime
 
 def format_market_cap(market_cap):
     if market_cap is None:
@@ -46,14 +51,15 @@ def format_total_debt(total_debt):
         return "- {:.2f}B".format(billion_value)
     else:
         return "{:.2f}B".format(billion_value)
-    
+
+
 def marketcap(request):
     # Hisse senedi sembolleri
     symbols = ["ARCLK.IS", "ALARK.IS", "ASELS.IS", "ASTOR.IS", "BIMAS.IS", "BRSAN.IS", "EKGYO.IS", "ENKAI.IS", "EREGL.IS", "FROTO.IS","GUBRF.IS", "HEKTS.IS", "KCHOL.IS",
     "KONTR.IS", "KOZAL.IS", "KRDMD.IS", "ODAS.IS", "OYAKC.IS",
     "PETKM.IS", "PGSUS.IS", "SAHOL.IS", "SASA.IS", "SISE.IS",
     "TCELL.IS", "THYAO.IS", "TOASO.IS", "TUPRS.IS"]
-
+    
     # Tüm hisse senedi verilerini saklayacak bir sözlük oluşturalım
     stock_data = {}
 
@@ -103,6 +109,7 @@ def marketcap(request):
             "total_debt": total_debt
             # Diğer verileri ekleyin
         }
+        
         formatted_stock_data = {
         symbol: {
             "current_price": data["current_price"],
@@ -116,8 +123,13 @@ def marketcap(request):
         }
         for symbol, data in stock_data.items()
     }
+    # Eski kodlar burada
+    
+    # Sıralama parametresini al
 
     return render(request, 'marketcap.html', {'stock_data': formatted_stock_data})
+
+
 
 def index (request): 
     return render(request, 'index.html')
@@ -130,6 +142,93 @@ def gridtables (request):
 
 def apexmixedcharts (request): 
     return render(request, 'apexmixedcharts.html')
+
+
+def retrieve_stock_data(ticker: str, start_date: str = "2020-01-01", end_date: str = datetime.now().strftime("%Y-%m-%d")):
+    ticker_info = ticker.info
+    
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    
+    hist_df = ticker.history(start=start_date, end=end_date)
+    hist_df = hist_df.reset_index()
+
+    return hist_df, ticker_info
+
+def create_line_chart(hist_df: pd.DataFrame):
+    fig = go.Figure(data=[
+        go.Scatter(
+            x=hist_df['Date'],
+            y=hist_df['Close'],
+            mode='lines',
+            fill='tozeroy',  # Alanı x eksenine kadar boyayacak
+            fillcolor='rgba(147, 112, 219, 0.2)',  # Hafif mor renk
+            line=dict(color='#9370DB'),
+            name='Close Price',
+            hovertemplate='<b>Date</b>: %{x| %d-%m-%Y}<br><b>Price</b>: ₺%{y:.2f}<extra></extra>'
+        )
+    ])
+    
+    fig.update_layout(
+        height=500,  
+        width=1570, 
+        plot_bgcolor="white",
+        margin={"t":0, "l":0, "r":0, "b":0}
+    )
+   
+    fig.update_xaxes(
+        showgrid=True,  # Dikey çizgileri göster
+        gridcolor="rgba(0, 0, 0, 0.1)",  # Çizgi rengi (hafif gri)
+        linecolor="gray",    # X eksen çizgisi rengi (siyah)
+        linewidth=2,  # X eksen çizgisi kalınlığı
+    )
+
+    fig.update_yaxes(
+        showgrid=True,  # Yatay çizgileri göster
+        gridcolor="rgba(0, 0, 0, 0.1)",  # Çizgi rengi (hafif gri)
+        linecolor="gray",    # X eksen çizgisi rengi (siyah)
+        linewidth=2,  # X eksen çizgisi kalınlığı
+    )
+
+    return fig
+
+def get_cash_flow_data(symbol):
+    # ARCLK.IS için finansal verileri çek
+    ticker = yf.Ticker(symbol)
+    
+    # Cash flow tablosunu al
+    cash_flow_annual = ticker.cashflow
+    
+    # DataFrame oluştur
+    df = pd.DataFrame(cash_flow_annual)
+    
+    # İstenilen finansal özellikleri seç
+    desired_rows = [
+        'Operating Cash Flow',
+        'Investing Cash Flow',
+        'Financing Cash Flow',
+        'End Cash Position',
+        'Changes in Cash',
+        'Effect of Exchange Rate Changes',
+        'Beginning Cash Position',
+        'Capital Expenditure',
+    ]
+    
+    # İstenilen özelliklerin her biri için sütunu al, yoksa NaN ile doldur
+    result = {}
+    for col in df.columns:
+        result[col.strftime('%Y-%m-%d')] = {}
+        for row in desired_rows:
+            if row in df.index:
+                value = df.loc[row, col]
+                formatted_value = locale.format_string("%.0f", value, grouping=True)
+                # Sonundaki sıfırları ve virgülü kaldır
+                formatted_value = formatted_value.rstrip('0').rstrip(',')
+                result[col.strftime('%Y-%m-%d')][row] = formatted_value
+            else:
+                result[col.strftime('%Y-%m-%d')][row] = "--"
+    
+    return result
 
 def profile(request, symbol):
     # Hisse senedi sembollerini ve etiketlerini tanımlayın
@@ -238,6 +337,16 @@ def profile(request, symbol):
         ceo = "N/A"
         cfo = "N/A"
 
+        hist_df, info = retrieve_stock_data(ticker)
+        linechart_fig = create_line_chart(hist_df)
+        chart_div = to_html(linechart_fig, full_html=False, 
+                        include_plotlyjs="cdn", div_id="ohlc")
+
+        p1, p2 = hist_df["Close"].values[-1], hist_df["Close"].values[-2]
+        change, prcnt_change = (p2-p1), (p2-p1) / p1
+
+        cash_flow_data = get_cash_flow_data(symbol)
+
         # CEO ve CFO'yu kontrol etmek için döngü
         for officer in company_officers:
             title = officer.get("title", "").lower()  # Unvanı küçük harfe dönüştür
@@ -266,8 +375,12 @@ def profile(request, symbol):
             "website": website,
             "long_description": long_description,
             "ceo": ceo,
-            "cfo": cfo
+            "cfo": cfo,
+            "chart_div": chart_div,
+            "cash_flow": cash_flow_data 
         }
+
+        
 
         # Verileri düzeltme
         if isinstance(roa, float):
@@ -284,6 +397,7 @@ def profile(request, symbol):
     else:
         # Geçersiz sembol durumunda hata sayfasına yönlendirme
         return render(request, 'error.html', {'error_message': 'Geçersiz sembol: {}'.format(symbol)})
+
 def tables (request): 
     return render(request, 'tables.html')
 

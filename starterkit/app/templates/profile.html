@@ -37,7 +37,8 @@
                     <div class="sm:flex items-start p-6 main-profile-cover">
                         <div>
                             <span class="avatar avatar-xxl avatar-rounded me-4">
-                                <img src="{% static 'assets/images/company-logos/' %}{{ symbol|slice:'0:5' }}.png" alt="">
+                                <img src="{% static 'assets/images/company-logos/' %}{{ symbol|slice:'0:5' }}.png"
+                                    alt="">
                             </span>
                         </div>
                         <div class="flex-grow main-profile-info">
@@ -46,8 +47,10 @@
                             </div>
                             <!--<p class="mb-1 !text-white  opacity-[0.7]">Chief Executive Officer (C.E.O)</p>-->
                             <p class="text-[0.75rem] text-white mb-6 opacity-[0.5]">
-                                <span class="me-4 inline-flex"><i class="ri-building-line me-1 align-middle"></i>{{ stock_data.country }}</span>
-                                <span class="inline-flex"><i class="ri-map-pin-line me-1 align-middle"></i>{{ stock_data.city }}</span>
+                                <span class="me-4 inline-flex"><i class="ri-building-line me-1 align-middle"></i>{{
+                                    stock_data.country }}</span>
+                                <span class="inline-flex"><i class="ri-map-pin-line me-1 align-middle"></i>{{
+                                    stock_data.city }}</span>
                             </p>
                         </div>
                     </div>
@@ -65,7 +68,8 @@
                         <p class="text-[.9375rem] mb-2 font-semibold">Links :</p>
                         <div class="mb-0">
                             <p class="mb-1">
-                                <a href="{{ stock_data.ARCLK.website }}" class="text-primary"><u>{{ stock_data.website }}</u></a>
+                                <a href="{{ stock_data.website }}" class="text-primary"><u>{{stock_data.website
+                                        }}</u></a>
                             </p>
                         </div>
                     </div>
@@ -77,7 +81,8 @@
                             <div class="sm:flex items-start">
                                 <div class="sm:ms-2 ms-0 sm:mt-0 mt-1 font-semibold flex-grow">
                                     <p class="mb-0 leading-none">{{ stock_data.ceo }}</p>
-                                    <span class="text-[.6875rem] text-[#8c9097] dark:text-white/50 opacity-[0.7]">CEO</span>
+                                    <span
+                                        class="text-[.6875rem] text-[#8c9097] dark:text-white/50 opacity-[0.7]">CEO</span>
                                 </div>
                             </div>
                         </li>
@@ -85,7 +90,8 @@
                             <div class="sm:flex items-start">
                                 <div class="sm:ms-2 ms-0 sm:mt-0 mt-1 font-semibold flex-grow">
                                     <p class="mb-0 leading-none">{{ stock_data.cfo }}</p>
-                                    <span class="text-[.6875rem] text-[#8c9097] dark:text-white/50 opacity-[0.7]">CFO</span>
+                                    <span
+                                        class="text-[.6875rem] text-[#8c9097] dark:text-white/50 opacity-[0.7]">CFO</span>
                                 </div>
                             </div>
                         </li>
@@ -97,8 +103,10 @@
                     </p>
                     <div class="text-[#8c9097] dark:text-white/50">
                         <p class="mb-2">
-                            <span class="avatar avatar-sm avatar-rounded me-2 bg-light text-[#8c9097] dark:text-white/50">
-                                <i class="ri-mail-line align-middle text-[.875rem] text-[#8c9097] dark:text-white/50"></i>
+                            <span
+                                class="avatar avatar-sm avatar-rounded me-2 bg-light text-[#8c9097] dark:text-white/50">
+                                <i
+                                    class="ri-phone-line align-middle text-[.875rem] text-[#8c9097] dark:text-white/50"></i>
                             </span>
                             {{ stock_data.phone }}
                         </p>
@@ -107,7 +115,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="xxl:col-span-8 xl:col-span-12 col-span-12">
         <div class="grid grid-cols-12 gap-x-6">
             <div class="xl:col-span-12 col-span-12">
@@ -324,53 +332,61 @@
                                                     <th scope="row" class="text-start">P/E</th>
                                                     <td>3.2</td>
                                                     <td>{{ stock_data.ARCLK.pe_ratio|floatformat:"1" }}</td>
-                                                    <td><a href="javascript:void(0);" class="text-success">231.25%<i class="ri-arrow ms-1"></i></a></td>
-                                
+                                                    <td><a href="javascript:void(0);" class="text-success">231.25%<i
+                                                                class="ri-arrow ms-1"></i></a></td>
+
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">Price to Book</th>
                                                     <td>29.2</td>
                                                     <td>{{ stock_data.ARCLK.price_to_book |floatformat:"2"}}</td>
-                                                    <td><a href="javascript:void(0);" class="text-danger">-93.86%<i class="ri-arrow ms-1"></i></a></td>
-                                
+                                                    <td><a href="javascript:void(0);" class="text-danger">-93.86%<i
+                                                                class="ri-arrow ms-1"></i></a></td>
+
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">EV/EBITDA</th>
                                                     <td>10.3</td>
                                                     <td>{{ stock_data.ARCLK.ev_ebitda |floatformat:"2"}}</td>
-                                                    <td><a href="javascript:void(0);" class="text-danger">-10.19%<i class="ri-arrow ms-1"></i></a></td>
-                                
+                                                    <td><a href="javascript:void(0);" class="text-danger">-10.19%<i
+                                                                class="ri-arrow ms-1"></i></a></td>
+
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">EV/FCFF</th>
                                                     <td>-12.6</td>
                                                     <td>-7.4</td>
-                                                    <td><a href="javascript:void(0);" class="text-success">41.5%<i class="ri-arrow-down-fill ms-1"></i></a></td>
+                                                    <td><a href="javascript:void(0);" class="text-success">41.5%<i
+                                                                class="ri-arrow-down-fill ms-1"></i></a></td>
 
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">ROA</th>
                                                     <td>4.0</td>
                                                     <td>3.1</td>
-                                                    <td><a href="javascript:void(0);" class="text-danger">-21.0%<i class="ri-arrow-down-fill ms-1"></i></a></td>
+                                                    <td><a href="javascript:void(0);" class="text-danger">-21.0%<i
+                                                                class="ri-arrow-down-fill ms-1"></i></a></td>
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">ROE</th>
                                                     <td>17.4</td>
                                                     <td>{{ stock_data.ARCLK.roe |floatformat:"2"}}</td>
-                                                    <td><a href="javascript:void(0);" class="text-danger">-16.9%<i class="ri-arrow-down-fill ms-1"></i></a></td>
+                                                    <td><a href="javascript:void(0);" class="text-danger">-16.9%<i
+                                                                class="ri-arrow-down-fill ms-1"></i></a></td>
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">Current Ratio</th>
                                                     <td>1.2</td>
                                                     <td>{{ stock_data.ARCLK.current_ratio |floatformat:"3" }}</td>
-                                                    <td><a href="javascript:void(0);" class="text-success">3.58%<i class="ri-arrow-up-fill ms-1"></i></a></td>
+                                                    <td><a href="javascript:void(0);" class="text-success">3.58%<i
+                                                                class="ri-arrow-up-fill ms-1"></i></a></td>
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">Quick Ratio</th>
                                                     <td>0.8</td>
                                                     <td>{{ stock_data.ARCLK.quick_ratio |floatformat:"2"}}</td>
-                                                    <td><a href="javascript:void(0);" class="text-success">7.5%<i class="ri-arrow-up-fill ms-1"></i></a></td>
+                                                    <td><a href="javascript:void(0);" class="text-success">7.5%<i
+                                                                class="ri-arrow-up-fill ms-1"></i></a></td>
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">Total Debt/Total Assets</th>
@@ -383,7 +399,8 @@
                                                     <th scope="row" class="text-start">Cash/Market Cap</th>
                                                     <td>0.0005</td>
                                                     <td>{{ stock_data.ARCLK.cash_market_cap}}</td>
-                                                    <td><a href="javascript:void(0);" class="text-success">5.4%<i class="ri-arrow-up-fill ms-1"></i></a></td>
+                                                    <td><a href="javascript:void(0);" class="text-success">5.4%<i
+                                                                class="ri-arrow-up-fill ms-1"></i></a></td>
                                                 </tr>
                                             </tbody>
 
@@ -415,10 +432,13 @@
                                     <div class="xl:col-span-6 col-span-16">
                                         <div class="box custom-box">
                                             <div class="box-header">
-                                                <div class="box-title">ARCLK Stock Price TL</div>
+                                                <div class="box-title"> {{stock_data.ticker}} Stock Price TL</div>
                                             </div>
                                             <div class="box-body">
-                                                <div id="line-chart"></div>
+                                                <div id="candlestick-chart-container"
+                                                    style="width: 100%; height: 500px;">
+                                                    {{stock_data.chart_div|safe}}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -432,7 +452,7 @@
                                     <div class="xl:col-span-6 col-span-16">
                                         <div class="box custom-box">
                                             <div class="box-header">
-                                                <div class="box-title">ARCLK Stock Price USD</div>
+                                                <div class="box-title"> Stock Price USD</div>
                                             </div>
                                             <div class="box-body">
                                                 <div id="line-chart-2"></div>
@@ -471,7 +491,7 @@
 
                                             </div>
                                             <div class="box-body">
-                                                <h5>TBD</h5>
+                                                <h5>{{stock_data.cash_flow}}</h5>
                                             </div>
 
                                         </div>
@@ -488,6 +508,7 @@
 </div>
 
 {% endblock %} {% block scripts %}
+<script src="{% static 'assets/js/maindeneme.js' %}"></script>
 
 <!-- Gallery JS -->
 <script src="{% static 'assets/libs/glightbox/js/glightbox.min.js'%}"></script>
