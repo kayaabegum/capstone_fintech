@@ -155,6 +155,64 @@ def retrieve_stock_data(ticker: str, start_date: str = "2020-01-01", end_date: s
 
     return hist_df, ticker_info
 
+def convert_stock_prices_to_usd(ticker: str, start_date: str = "2020-01-01", end_date: str = datetime.now().strftime("%Y-%m-%d")):
+    # Hisse senedi verilerini TL cinsinden alın
+    hist_df = yf.download(ticker, start=start_date, end=end_date)
+
+    # USD/TRY döviz kuru verilerini alın
+    usd_try_data = yf.download("USDTRY=X", start=start_date, end=end_date)['Close']
+
+    # TL cinsinden hisse senedi fiyatlarını alın
+    tl_prices = hist_df['Close']
+
+    # TL fiyatlarını USD cinsine dönüştürme
+    tl_to_usd_prices = tl_prices / usd_try_data
+
+    return tl_to_usd_prices
+
+def create_line_chart_with_usd_prices(symbol: str, start_date: str = "2020-01-01", end_date: str = datetime.now().strftime("%Y-%m-%d")):
+    # Hisse senedi verilerini TL cinsinden alın
+    hist_df = yf.download(symbol, start=start_date, end=end_date)
+
+    # USD cinsinden hisse senedi fiyatlarını alın
+    usd_stock_prices = convert_stock_prices_to_usd(symbol, start_date, end_date)
+
+    # Plotly grafiği oluşturma
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(x=hist_df.index, y=usd_stock_prices, mode='lines', name='Close (USD)',
+                             hovertemplate='<b>Date</b>: %{x|%d-%m-%Y}<br><b>Price (USD)</b>: $%{y:.2f}<extra></extra>',
+                             fill='tozeroy', 
+                             fillcolor='rgba(147, 112, 219, 0.2)',
+                             line=dict(color='#9370DB')))
+
+    # Grafiği düzenleme
+    fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Price",
+        template="plotly_white",
+        plot_bgcolor="white",
+        margin={"t": 60, "l": 0, "r": 0, "b": 0},
+        height=500,  
+        width=1570, 
+    )
+
+    fig.update_xaxes(
+        showgrid=True,  # Dikey çizgileri göster
+        gridcolor="rgba(0, 0, 0, 0.1)",  # Çizgi rengi (hafif gri)
+        linecolor="gray",    # X eksen çizgisi rengi (siyah)
+        linewidth=2,  # X eksen çizgisi kalınlığı
+    )
+
+    fig.update_yaxes(
+        showgrid=True,  # Yatay çizgileri göster
+        gridcolor="rgba(0, 0, 0, 0.1)",  # Çizgi rengi (hafif gri)
+        linecolor="gray",    # X eksen çizgisi rengi (siyah)
+        linewidth=2,  # X eksen çizgisi kalınlığı
+    )
+
+    return fig
+
 def create_line_chart(hist_df: pd.DataFrame):
     fig = go.Figure(data=[
         go.Scatter(
@@ -165,11 +223,13 @@ def create_line_chart(hist_df: pd.DataFrame):
             fillcolor='rgba(147, 112, 219, 0.2)',  # Hafif mor renk
             line=dict(color='#9370DB'),
             name='Close Price',
-            hovertemplate='<b>Date</b>: %{x| %d-%m-%Y}<br><b>Price</b>: ₺%{y:.2f}<extra></extra>'
+            hovertemplate='<b>Date</b>: %{x| %d-%m-%Y}<br><b>Price (TL)</b>: ₺%{y:.2f}<extra></extra>'
         )
     ])
     
     fig.update_layout(
+        xaxis_title="Date",
+        yaxis_title="Price",
         height=500,  
         width=1570, 
         plot_bgcolor="white",
@@ -191,6 +251,7 @@ def create_line_chart(hist_df: pd.DataFrame):
     )
 
     return fig
+
 
 def get_cash_flow_data(symbol):
     # ARCLK.IS için finansal verileri çek
@@ -337,13 +398,21 @@ def profile(request, symbol):
         ceo = "N/A"
         cfo = "N/A"
 
-        hist_df, info = retrieve_stock_data(ticker)
-        linechart_fig = create_line_chart(hist_df)
-        chart_div = to_html(linechart_fig, full_html=False, 
-                        include_plotlyjs="cdn", div_id="ohlc")
+        hist_df = yf.download(symbol, start="2020-01-01", end=datetime.now().strftime("%Y-%m-%d"))
+        usd_chart = create_line_chart_with_usd_prices(symbol)
+        
+        # USDTRY kuru için grafik oluşturun
+        hist_df_tl, info = retrieve_stock_data(ticker)
+        linechart_fig = create_line_chart(hist_df_tl)
+
+        
+        chart_div = to_html(linechart_fig, full_html=False, include_plotlyjs="cdn")
+        usd_chart_div = to_html(usd_chart, full_html=False, include_plotlyjs="cdn")
 
         p1, p2 = hist_df["Close"].values[-1], hist_df["Close"].values[-2]
         change, prcnt_change = (p2-p1), (p2-p1) / p1
+        # USD/TRY döviz kurunu alın (TL cinsinden)
+
 
         cash_flow_data = get_cash_flow_data(symbol)
 
@@ -377,10 +446,9 @@ def profile(request, symbol):
             "ceo": ceo,
             "cfo": cfo,
             "chart_div": chart_div,
+            "usd_chart_div": usd_chart_div,
             "cash_flow": cash_flow_data 
         }
-
-        
 
         # Verileri düzeltme
         if isinstance(roa, float):
