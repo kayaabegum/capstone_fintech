@@ -291,6 +291,142 @@ def get_cash_flow_data(symbol):
     
     return result
 
+def generate_net_debt_change_chart(symbol):
+    # Sembole göre finansal verileri çek
+    ticker = yf.Ticker(symbol)
+    
+    try:
+        # Bilanço tablosunu al
+        balance_sheet_annual = ticker.balance_sheet
+        # DataFrame oluştur
+        df_balance_sheet = pd.DataFrame(balance_sheet_annual)
+        
+        # Gerekli verileri seç
+        required_values = ['Total Debt', 'Cash And Cash Equivalents', 'Net Debt']
+        
+        # Seçilen verileri bir önceki yılın verileriyle birleştir
+        selected_data = df_balance_sheet.loc[required_values].T
+        
+        # Tarih aralığını oluştur
+        dates = pd.date_range('2020-12-31', '2023-12-31', freq='Y')
+        
+        # Seçilen verileri belirtilen tarih aralığına göre filtrele
+        selected_data = selected_data[selected_data.index.isin(dates)]
+        
+        # Farkları içeren bir DataFrame oluştur
+        percentage_change_df = pd.DataFrame(columns=['2021', '2022', '2023'])
+        
+        if '2020-12-31' in selected_data.index and '2021-12-31' in selected_data.index:
+            percentage_change_2021_2020 = (selected_data.loc['2021-12-31'] / selected_data.loc['2020-12-31'] - 1) * 100
+            percentage_change_df['2021'] = percentage_change_2021_2020
+        
+        if '2021-12-31' in selected_data.index and '2022-12-31' in selected_data.index:
+            percentage_change_2022_2021 = (selected_data.loc['2022-12-31'] / selected_data.loc['2021-12-31'] - 1) * 100
+            percentage_change_df['2022'] = percentage_change_2022_2021
+        
+        if '2022-12-31' in selected_data.index and '2023-12-31' in selected_data.index:
+            percentage_change_2023_2022 = (selected_data.loc['2023-12-31'] / selected_data.loc['2022-12-31'] - 1) * 100
+            percentage_change_df['2023'] = percentage_change_2023_2022
+            
+        # Finansal kalemleri ayrı sütunlar olarak ayır
+        separated_df = pd.DataFrame()
+            
+        for index in percentage_change_df.index:
+            separated_df[index] = percentage_change_df.loc[index]
+            
+        # Görselleştirme
+        fig = go.Figure()
+        colors = ["#845adf", "#f5b849", "#23b7e5"]
+            
+        for i, column in enumerate(separated_df.columns):
+            fig.add_trace(go.Bar(x=[f"202{i+1}" for i in range(len(separated_df))], y=separated_df[column], name=column,
+                                 marker_color=colors[i],
+                                 text=[f"{val:.1f}%" for val in separated_df[column]],
+                                 hoverinfo='text',
+                                 textposition='none',
+                                 showlegend=True))
+            
+        fig.update_layout(title='',
+                          xaxis=dict(title=''),
+                          yaxis=dict(title=''),
+                          plot_bgcolor='rgba(0,0,0,0)',
+                          barmode='group',
+                          height=500,  
+                          width=1570,)  # Yükseklik ayarı
+            
+        # "Total Debt" yerine "Financial Debt" olarak gösterim düzenleme
+        fig.for_each_trace(lambda trace: trace.update(name=trace.name.replace('Total Debt', 'Financial Debt')))
+            
+        fig.update_xaxes(showline=True, linewidth=1, linecolor='black')
+        fig.update_yaxes(showline=True, linewidth=1, linecolor='black')
+        
+    except KeyError:
+        balance_sheet_annual = ticker.balance_sheet
+        # DataFrame oluştur
+        df_balance_sheet = pd.DataFrame(balance_sheet_annual)
+        
+        # Gerekli verileri seç
+        required_values = ['Total Debt', 'Cash And Cash Equivalents']
+        
+        # Seçilen verileri bir önceki yılın verileriyle birleştir
+        selected_data = df_balance_sheet.loc[required_values].T
+        
+        # Tarih aralığını oluştur
+        dates = pd.date_range('2020-12-31', '2023-12-31', freq='Y')
+        
+        # Seçilen verileri belirtilen tarih aralığına göre filtrele
+        selected_data = selected_data[selected_data.index.isin(dates)]
+        
+        # Farkları içeren bir DataFrame oluştur
+        percentage_change_df = pd.DataFrame(columns=['2021', '2022', '2023'])
+        
+        if '2020-12-31' in selected_data.index and '2021-12-31' in selected_data.index:
+            percentage_change_2021_2020 = (selected_data.loc['2021-12-31'] / selected_data.loc['2020-12-31'] - 1) * 100
+            percentage_change_df['2021'] = percentage_change_2021_2020
+        
+        if '2021-12-31' in selected_data.index and '2022-12-31' in selected_data.index:
+            percentage_change_2022_2021 = (selected_data.loc['2022-12-31'] / selected_data.loc['2021-12-31'] - 1) * 100
+            percentage_change_df['2022'] = percentage_change_2022_2021
+        
+        if '2022-12-31' in selected_data.index and '2023-12-31' in selected_data.index:
+            percentage_change_2023_2022 = (selected_data.loc['2023-12-31'] / selected_data.loc['2022-12-31'] - 1) * 100
+            percentage_change_df['2023'] = percentage_change_2023_2022
+            
+        # Finansal kalemleri ayrı sütunlar olarak ayır
+        separated_df = pd.DataFrame()
+            
+        for index in percentage_change_df.index:
+            separated_df[index] = percentage_change_df.loc[index]
+            
+        # Görselleştirme
+        fig = go.Figure()
+        colors = ["#845adf", "#f5b849"]
+            
+        for i, column in enumerate(separated_df.columns):
+            fig.add_trace(go.Bar(x=[f"202{i+1}" for i in range(len(separated_df))], y=separated_df[column], name=column,
+                                 marker_color=colors[i],
+                                 text=[f"{val:.1f}%" for val in separated_df[column]],
+                                 hoverinfo='text',
+                                 textposition='none',  # Yalnızca yükseklik değerlerini göster
+                                 showlegend=True))
+            
+        fig.update_layout(title='',
+                          xaxis=dict(title=''),
+                          yaxis=dict(title=''),
+                          plot_bgcolor='rgba(0,0,0,0)',
+                          barmode='group',
+                          height=500,  
+                          width=1570,)  # Yükseklik ayarı
+            
+        # "Total Debt" yerine "Financial Debt" olarak gösterim düzenleme
+        fig.for_each_trace(lambda trace: trace.update(name=trace.name.replace('Total Debt', 'Financial Debt')))
+            
+        fig.update_xaxes(showline=True, linewidth=1, linecolor='black')
+        fig.update_yaxes(showline=True, linewidth=1, linecolor='black')
+
+    return fig
+
+
 def profile(request, symbol):
     # Hisse senedi sembollerini ve etiketlerini tanımlayın
     stocks = {
@@ -412,6 +548,8 @@ def profile(request, symbol):
         p1, p2 = hist_df["Close"].values[-1], hist_df["Close"].values[-2]
         change, prcnt_change = (p2-p1), (p2-p1) / p1
         # USD/TRY döviz kurunu alın (TL cinsinden)
+        columnchart_fig = generate_net_debt_change_chart(symbol)
+        chart_netdebt_div = to_html(columnchart_fig, full_html=False, include_plotlyjs="cdn")
 
 
         cash_flow_data = get_cash_flow_data(symbol)
@@ -447,6 +585,7 @@ def profile(request, symbol):
             "cfo": cfo,
             "chart_div": chart_div,
             "usd_chart_div": usd_chart_div,
+            "chart_netdebt_div": chart_netdebt_div,
             "cash_flow": cash_flow_data 
         }
 

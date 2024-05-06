@@ -418,10 +418,10 @@
                                 <div class="xl:col-span-6 col-span-12">
                                     <div class="box custom-box">
                                         <div class="box-header">
-                                            <div class="box-title">ARCLK Net Debt Analysis</div>
+                                            <div class="box-title">{{stock_data.symbol}} Net Debt Analysis</div>
                                         </div>
                                         <div class="box-body">
-                                            <div id="column-basic"></div>
+                                            {{stock_data.chart_netdebt_div|safe}}
                                         </div>
                                     </div>
                                 </div>
@@ -432,7 +432,7 @@
                                     <div class="xl:col-span-6 col-span-16">
                                         <div class="box custom-box">
                                             <div class="box-header">
-                                                <div class="box-title"> {{stock_data.ticker}} Stock Price TL</div>
+                                                <div class="box-title">Stock Price TL</div>
                                             </div>
                                             <div class="box-body">
                                                 <div id="candlestick-chart-container"
