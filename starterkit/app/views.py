@@ -160,7 +160,7 @@ def convert_stock_prices_to_usd(ticker: str, start_date: str = "2020-01-01", end
     hist_df = yf.download(ticker, start=start_date, end=end_date)
 
     # USD/TRY döviz kuru verilerini alın
-    usd_try_data = yf.download("USDTRY=X", start=start_date, end=end_date)['Close']
+    usd_try_data = yf.download("TRY=X", start=start_date, end=end_date)['Close']
 
     # TL cinsinden hisse senedi fiyatlarını alın
     tl_prices = hist_df['Close']
@@ -334,6 +334,8 @@ def generate_net_debt_change_chart(symbol):
         for index in percentage_change_df.index:
             separated_df[index] = percentage_change_df.loc[index]
             
+
+
         # Görselleştirme
         fig = go.Figure()
         colors = ["#845adf", "#f5b849", "#23b7e5"]
@@ -343,7 +345,7 @@ def generate_net_debt_change_chart(symbol):
                                  marker_color=colors[i],
                                  text=[f"{val:.1f}%" for val in separated_df[column]],
                                  hoverinfo='text',
-                                 textposition='none',
+                                 textposition='auto',
                                  showlegend=True))
             
         fig.update_layout(title='',
@@ -407,7 +409,7 @@ def generate_net_debt_change_chart(symbol):
                                  marker_color=colors[i],
                                  text=[f"{val:.1f}%" for val in separated_df[column]],
                                  hoverinfo='text',
-                                 textposition='none',  # Yalnızca yükseklik değerlerini göster
+                                 textposition='auto',  # Yalnızca yükseklik değerlerini göster
                                  showlegend=True))
             
         fig.update_layout(title='',
