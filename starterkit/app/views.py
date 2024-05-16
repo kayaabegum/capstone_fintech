@@ -5,6 +5,8 @@ import locale
 import plotly.graph_objects as go
 from plotly.io import to_html
 from datetime import datetime
+from .models import Company
+import json
 
 def format_market_cap(market_cap):
     if market_cap is None:
@@ -80,6 +82,7 @@ def marketcap(request):
         # PE Ratio
         pe_ratio = ticker.info.get("trailingPE")
         if pe_ratio is not None:
+            pe_ratio = float(pe_ratio)
             pe_ratio = "{:.2f}".format(pe_ratio)
 
         # EV ve EBITDA değerleri
@@ -128,21 +131,6 @@ def marketcap(request):
     # Sıralama parametresini al
 
     return render(request, 'marketcap.html', {'stock_data': formatted_stock_data})
-
-
-
-def index (request): 
-    return render(request, 'index.html')
-
-def datatables (request): 
-    return render(request, 'datatables.html')
-
-def gridtables (request): 
-    return render(request, 'gridtables.html')
-
-def apexmixedcharts (request): 
-    return render(request, 'apexmixedcharts.html')
-
 
 def retrieve_stock_data(ticker: str, start_date: str = "2020-01-01", end_date: str = datetime.now().strftime("%Y-%m-%d")):
     ticker_info = ticker.info
@@ -252,45 +240,48 @@ def create_line_chart(hist_df: pd.DataFrame):
 
     return fig
 
-
 def get_cash_flow_data(symbol):
-    # ARCLK.IS için finansal verileri çek
-    ticker = yf.Ticker(symbol)
+    try:
+        company_obj = Company.objects.get(symbol=symbol)
+        cash_flow_data = company_obj.cash_flow
+        return cash_flow_data
     
-    # Cash flow tablosunu al
-    cash_flow_annual = ticker.cashflow
+    except Company.DoesNotExist:
+        return None
     
-    # DataFrame oluştur
-    df = pd.DataFrame(cash_flow_annual)
+def get_income_statement_data(symbol):
+    try:
+        company_obj = Company.objects.get(symbol=symbol)
+        income_statement_data = company_obj.income_statement
+        return income_statement_data
     
-    # İstenilen finansal özellikleri seç
-    desired_rows = [
-        'Operating Cash Flow',
-        'Investing Cash Flow',
-        'Financing Cash Flow',
-        'End Cash Position',
-        'Changes in Cash',
-        'Effect of Exchange Rate Changes',
-        'Beginning Cash Position',
-        'Capital Expenditure',
-    ]
+    except Company.DoesNotExist:
+        return None
     
-    # İstenilen özelliklerin her biri için sütunu al, yoksa NaN ile doldur
-    result = {}
-    for col in df.columns:
-        result[col.strftime('%Y-%m-%d')] = {}
-        for row in desired_rows:
-            if row in df.index:
-                value = df.loc[row, col]
-                formatted_value = locale.format_string("%.0f", value, grouping=True)
-                # Sonundaki sıfırları ve virgülü kaldır
-                formatted_value = formatted_value.rstrip('0').rstrip(',')
-                result[col.strftime('%Y-%m-%d')][row] = formatted_value
-            else:
-                result[col.strftime('%Y-%m-%d')][row] = "--"
+def get_balance_sheet_data(symbol):
+    try:
+        company_obj = Company.objects.get(symbol=symbol)
+        balance_sheet_data = company_obj.balance_sheet
+        return balance_sheet_data
     
-    return result
+    except Company.DoesNotExist:
+        return None
+    
+def get_profitability_data(symbol):
+    try:
+        company_obj = Company.objects.get(symbol=symbol)
+        profitability_data = company_obj.profitability
+        return profitability_data
+    
+    except Company.DoesNotExist:
+        return None
+    
 
+def get_stock_name(symbol):
+    company_obj = Company.objects.get(symbol=symbol)
+    stock_name = company_obj.name
+    return stock_name
+    
 def generate_net_debt_change_chart(symbol):
     # Sembole göre finansal verileri çek
     ticker = yf.Ticker(symbol)
@@ -302,7 +293,11 @@ def generate_net_debt_change_chart(symbol):
         df_balance_sheet = pd.DataFrame(balance_sheet_annual)
         
         # Gerekli verileri seç
-        required_values = ['Total Debt', 'Cash And Cash Equivalents', 'Net Debt']
+        required_values = ['Total Debt', 'Cash And Cash Equivalents', 'Other Short Term Investments']
+        
+        # Anahtarların veri setinde olup olmadığını kontrol et
+        if 'Other Short Term Investments' not in df_balance_sheet.index:
+            required_values.remove('Other Short Term Investments')
         
         # Seçilen verileri bir önceki yılın verileriyle birleştir
         selected_data = df_balance_sheet.loc[required_values].T
@@ -334,7 +329,6 @@ def generate_net_debt_change_chart(symbol):
         for index in percentage_change_df.index:
             separated_df[index] = percentage_change_df.loc[index]
             
-
 
         # Görselleştirme
         fig = go.Figure()
@@ -363,70 +357,11 @@ def generate_net_debt_change_chart(symbol):
         fig.update_yaxes(showline=True, linewidth=1, linecolor='black')
         
     except KeyError:
-        balance_sheet_annual = ticker.balance_sheet
-        # DataFrame oluştur
-        df_balance_sheet = pd.DataFrame(balance_sheet_annual)
-        
-        # Gerekli verileri seç
-        required_values = ['Total Debt', 'Cash And Cash Equivalents']
-        
-        # Seçilen verileri bir önceki yılın verileriyle birleştir
-        selected_data = df_balance_sheet.loc[required_values].T
-        
-        # Tarih aralığını oluştur
-        dates = pd.date_range('2020-12-31', '2023-12-31', freq='Y')
-        
-        # Seçilen verileri belirtilen tarih aralığına göre filtrele
-        selected_data = selected_data[selected_data.index.isin(dates)]
-        
-        # Farkları içeren bir DataFrame oluştur
-        percentage_change_df = pd.DataFrame(columns=['2021', '2022', '2023'])
-        
-        if '2020-12-31' in selected_data.index and '2021-12-31' in selected_data.index:
-            percentage_change_2021_2020 = (selected_data.loc['2021-12-31'] / selected_data.loc['2020-12-31'] - 1) * 100
-            percentage_change_df['2021'] = percentage_change_2021_2020
-        
-        if '2021-12-31' in selected_data.index and '2022-12-31' in selected_data.index:
-            percentage_change_2022_2021 = (selected_data.loc['2022-12-31'] / selected_data.loc['2021-12-31'] - 1) * 100
-            percentage_change_df['2022'] = percentage_change_2022_2021
-        
-        if '2022-12-31' in selected_data.index and '2023-12-31' in selected_data.index:
-            percentage_change_2023_2022 = (selected_data.loc['2023-12-31'] / selected_data.loc['2022-12-31'] - 1) * 100
-            percentage_change_df['2023'] = percentage_change_2023_2022
-            
-        # Finansal kalemleri ayrı sütunlar olarak ayır
-        separated_df = pd.DataFrame()
-            
-        for index in percentage_change_df.index:
-            separated_df[index] = percentage_change_df.loc[index]
-            
-        # Görselleştirme
-        fig = go.Figure()
-        colors = ["#845adf", "#f5b849"]
-            
-        for i, column in enumerate(separated_df.columns):
-            fig.add_trace(go.Bar(x=[f"202{i+1}" for i in range(len(separated_df))], y=separated_df[column], name=column,
-                                 marker_color=colors[i],
-                                 text=[f"{val:.1f}%" for val in separated_df[column]],
-                                 hoverinfo='text',
-                                 textposition='auto',  # Yalnızca yükseklik değerlerini göster
-                                 showlegend=True))
-            
-        fig.update_layout(title='',
-                          xaxis=dict(title=''),
-                          yaxis=dict(title=''),
-                          plot_bgcolor='rgba(0,0,0,0)',
-                          barmode='group',
-                          height=500,  
-                          width=1570,)  # Yükseklik ayarı
-            
-        # "Total Debt" yerine "Financial Debt" olarak gösterim düzenleme
-        fig.for_each_trace(lambda trace: trace.update(name=trace.name.replace('Total Debt', 'Financial Debt')))
-            
-        fig.update_xaxes(showline=True, linewidth=1, linecolor='black')
-        fig.update_yaxes(showline=True, linewidth=1, linecolor='black')
+        print("Veri setinde beklenmeyen bir anahtar bulundu.")
+        return None
 
     return fig
+
 
 
 def profile(request, symbol):
@@ -515,6 +450,8 @@ def profile(request, symbol):
 
         if free_cash_flow is not None and marketcap is not None:
             cash_to_marketcap = free_cash_flow / marketcap
+        else:
+            cash_to_marketcap = None 
         
         # Şirket hakkında daha detaylı bilgileri alın
         company_info = ticker.info
@@ -523,10 +460,13 @@ def profile(request, symbol):
         address = company_info.get("address2")
         city = company_info.get("city")
         country = company_info.get("country")
+        sector = company_info.get("sector")
+        industry = company_info.get("industry")
 
         # Şirketin iletişim bilgilerini alın
         phone = company_info.get("phone")
         website = company_info.get("website")
+        long_name = company_info.get("longName")
 
         # Şirketin uzun açıklamasını alın
         long_description = company_info.get("longBusinessSummary")
@@ -554,7 +494,14 @@ def profile(request, symbol):
         chart_netdebt_div = to_html(columnchart_fig, full_html=False, include_plotlyjs="cdn")
 
 
-        cash_flow_data = get_cash_flow_data(symbol)
+        cash_flow= get_cash_flow_data(symbol)
+        income_data = get_income_statement_data(symbol)
+        balance_data = get_balance_sheet_data(symbol)
+        profitability_data = get_profitability_data(symbol)
+        stock_name = get_stock_name(symbol)
+
+        
+
 
         # CEO ve CFO'yu kontrol etmek için döngü
         for officer in company_officers:
@@ -582,13 +529,20 @@ def profile(request, symbol):
             "country": country,
             "phone": phone,
             "website": website,
+            "long_name": long_name,
             "long_description": long_description,
+            "sector": sector,
+            "industry": industry,
             "ceo": ceo,
             "cfo": cfo,
             "chart_div": chart_div,
             "usd_chart_div": usd_chart_div,
             "chart_netdebt_div": chart_netdebt_div,
-            "cash_flow": cash_flow_data 
+            "cash_flow": cash_flow,
+            "income_data": income_data,
+            "balance_data": balance_data,
+            "profitability_data": profitability_data,
+            "stock_name": stock_name,
         }
 
         # Verileri düzeltme

@@ -90,31 +90,23 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'starterkit.wsgi.application'
+USE_THOUSAND_SEPARATOR = True
 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'mongodb': {
-        'ENGINE': 'djongo',
-        'NAME': 'hissekar',
-        'CLIENT': {
-            'host': 'mongodb+srv://oylesinebegumiko:7VuqXXwTNvVK1xjy@cluster0.fykr3bu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-            'port': 27017,
-            'username': 'oylesinebegumiko',
-            'password': '7VuqXXwTNvVK1xjy',
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-256',
-        },
-    },
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hissekar',   # Veritabanı adınız
+        'USER': 'postgres',   # PostgreSQL kullanıcı adınız
+        'PASSWORD': 'MetehanMete777',   # PostgreSQL parolanız
+        'HOST': 'localhost',   # Veritabanı sunucunuzun adresi
+        'PORT': '5432',   # PostgreSQL port numarası
+    }
+    
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
