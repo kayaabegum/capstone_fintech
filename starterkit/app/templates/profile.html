@@ -213,39 +213,124 @@
                                             <tbody>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">Revenue</th>
-                                                    {%for TR, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.TR }}</td>{% endfor %}
+                                                    {% for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {% if data.TR < 0 %} <span style="color: red;">{{ data.TR }}% <i
+                                                                class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.TR }}%<i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.TR }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">Gross Profit</th>
-                                                    {%for GP, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.GP }}</td>{% endfor %}
+                                                    {%for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {% if data.GP < 0 %} <span style="color: red;">{{ data.GP }}% <i
+                                                                class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.GP }}%<i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.GP }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">Operating Income</th>
-                                                    {%for OI, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.OI }}</td>{% endfor %}
+                                                    {%for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {% if data.OI < 0 %} <span style="color: red;">{{ data.OI }}% <i
+                                                                class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.OI }}% <i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.OI }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">NOPAT</th>
-                                                    {%for NOPAT, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.NOPAT }}</td>{% endfor %}
+                                                    {%for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {% if data.NOPAT < 0 %} <span style="color: red;">
+                                                            {{data.NOPAT}}%
+                                                            <i class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.NOPAT }}% <i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.NOPAT }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">EBIT</th>
-                                                    {%for EBIT, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.EBIT }}</td>{% endfor %}
+                                                    {%for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {% if data.EBIT < 0 %} <span style="color: red;">{{ data.EBIT}}%
+                                                            <i class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.EBIT }}% <i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.EBIT }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start">EBITDA</th>
-                                                    {%for EBITDA, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.EBITDA }}</td>{% endfor %}
-
+                                                    {%for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {% if data.EBITDA < 0 %} <span style="color: red;">
+                                                            {{data.EBITDA}}%
+                                                            <i class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.EBITDA }}% <i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.EBITDA }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start"> Net Income </th>
-                                                    {%for NI, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.NI }}</td>{% endfor %}
+                                                    {%for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {% if data.NI < 0 %} <span style="color: red;">{{ data.NI }}% <i
+                                                                class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.NI }}% <i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.NI }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start"> FCFF </th>
