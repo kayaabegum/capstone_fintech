@@ -46,7 +46,7 @@
                         Marketcap
                     </div>
                     <div class="flex flex-wrap gap-2">
-                        <div>
+                        <!--<div>
                             <input class="form-control form-control-sm" type="text" placeholder="Search Here"
                                 aria-label=".form-control-sm example">
                         </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div>
 
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="box-body !p-0">
@@ -76,7 +76,7 @@
                         <table class="table whitespace-nowrap min-w-full table" id="crypto_table">
                             <thead>
                                 <tr>
-                                    <th scope="col"></th>
+
                                     <th scope="col" class="font-semibold text-start">#</th>
                                     <th scope="col" class="text-start">Company Name</th>
                                     <th scope="col" class="text-start">Last Price</th>
@@ -88,16 +88,12 @@
                                     <th scope="col" class="text-start">EV/EBITDA</th>
                                     <th scope="col" class="text-start">Total Debt</th>
                                     <th scope="col" class="text-start">FCF</th>
-
                                 </tr>
                             </thead>
                             <tbody id="crypto_table_body">
                                 {% for symbol, data in stock_data.items %}
                                 <tr class="border border-defaultborder border-x-0">
-                                    <td class="text-center">
-                                        <a aria-label="anchor" href="javascript:void(0);"><i
-                                                class="ri-star-line text-[1rem] text-[#8c9097] dark:text-white/50"></i></a>
-                                    </td>
+
                                     <td>{{ forloop.counter }}</td>
                                     <td>
                                         <div class="flex items-center gap-2">

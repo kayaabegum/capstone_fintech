@@ -1,12 +1,10 @@
 from django.shortcuts import render
 import yfinance as yf
 import pandas as pd
-import locale
 import plotly.graph_objects as go
 from plotly.io import to_html
 from datetime import datetime
 from .models import Company
-import json
 
 def format_market_cap(market_cap):
     if market_cap is None:
@@ -385,73 +383,48 @@ def profile(request, symbol):
         # Ticker objesini oluşturun
         ticker = yf.Ticker(symbol)
 
-        # Geçerli P/E oranını alın
-        pe_ratio = ticker.info.get("forwardPE", "N/A")
-
-        # Geçerli Price to Book oranını alın
+        pe_ratio = ticker.info.get("trailingPE", "N/A")
         price_to_book = ticker.info.get("priceToBook", "N/A")
 
-        #fcff
-        free_cash_flow = ticker.info.get("freeCashflow", "N/A")
-
-        # EV ve EBITDA değerleri
-        enterprise_value = ticker.info.get("enterpriseValue")
-        ebitda = ticker.info.get("ebitda")
-
-        # EV/EBITDA oranı
-        ev_ebitda = None
-        if enterprise_value is not None and ebitda is not None and ebitda != 0:
-            ev_ebitda = enterprise_value / ebitda
-
-        # Geçerli EV/EBITDA oranını alın
-        ev_ebitda = ticker.info.get("enterpriseToEbitda", "N/A")
+        enterprise_value = ticker.info.get("enterpriseValue", "N/A")
+        ebitda = ticker.info.get("ebitda", "N/A")
+        enterpriseToEbitda = ticker.info.get("enterpriseToEbitda", "N/A")
 
         ev_fcff = None
-        if enterprise_value == "N/A" or free_cash_flow == "N/A":
-            enterprise_value = None
-            free_cash_flow = None
-
-        # Dönüştürülmüş enterprise_value ve free_cash_flow değerleri None değilse ve bir dize (str) değilse, kayan noktalı sayı (float) türüne dönüştür
-        if enterprise_value is not None and not isinstance(enterprise_value, float):
-            enterprise_value = float(enterprise_value)
-
-        if free_cash_flow is not None and not isinstance(free_cash_flow, float):
-            free_cash_flow = float(free_cash_flow)
-
-        # Eğer hem enterprise_value hem de free_cash_flow değerleri None değilse ve free_cash_flow 0'a eşit değilse, ev_fcff hesapla
-        if enterprise_value is not None and free_cash_flow is not None and free_cash_flow != 0:
-            ev_fcff = enterprise_value / free_cash_flow
+        free_cash_flow = ticker.info.get("freeCashflow", "N/A")
+        if enterprise_value != "N/A" and free_cash_flow != "N/A":
+            ev_fcff = round(enterprise_value / free_cash_flow, 2)
         else:
-            ev_fcff = None  
-        # Geçerli EV/FCFF oranını alın
-
-        # Geçerli ROA oranını alın
-        roa  = ticker.info.get("returnOnAssets", "N/A")
-
-        # Geçerli ROE oranını alın
+            ev_fcff = "N/A"
+            
+        roa = ticker.info.get("returnOnAssets", "N/A")
         roe = ticker.info.get("returnOnEquity", "N/A")
-
-        # Geçerli Current Ratio'yu alın
         current_ratio = ticker.info.get("currentRatio", "N/A")
-
-        # Geçerli Quick Ratio'yu alın
         quick_ratio = ticker.info.get("quickRatio", "N/A")
 
-        #totaldebt/cash
-        total_revenue = ticker.info.get("totalRevenue", "N/A")
         total_debt = ticker.info.get("totalDebt", "N/A")
-        
-        if total_revenue is not None and total_debt is not None:
-            total_debt_to_total_assets1 = total_debt / total_revenue
-            total_debt_to_total_assets = total_debt_to_total_assets1 * -1
+        total_debt_to_fcf = None
+    
+        # total_debt ve free_cash_flow değerlerini float (ondalıklı sayı) türüne dönüştürme
+        try:
+            total_debt = float(total_debt)
+            free_cash_flow = float(free_cash_flow)
+        except (TypeError, ValueError):
+        # Dönüşüm hatası oluşursa veya değerler None ise, uygun bir hata mesajı veya varsayılan değer döndürme
+            total_debt = None
+            free_cash_flow = None
 
-        #fcf or totalcash / marketcap
-        marketcap = ticker.info.get("marketCap", "N/A")
-
-        if free_cash_flow is not None and marketcap is not None:
-            cash_to_marketcap = free_cash_flow / marketcap
+        # total_debt ve free_cash_flow değerleri uygun formata dönüştürüldüyse işlemi yapma
+        if total_debt is not None and free_cash_flow is not None:
+            total_debt_to_fcf = round(total_debt / free_cash_flow, 2)
         else:
-            cash_to_marketcap = None 
+            total_debt_to_fcf = "N/A"  # veya uygun bir hata mesajı veya varsayılan değer
+
+        marketcap = ticker.info.get("marketCap", "N/A")
+        total_cash = ticker.info.get("totalCash", "N/A")
+        cash_to_marketcap = None
+        if total_cash and marketcap:
+            cash_to_marketcap = round(total_cash / marketcap, 2)
         
         # Şirket hakkında daha detaylı bilgileri alın
         company_info = ticker.info
@@ -500,8 +473,6 @@ def profile(request, symbol):
         profitability_data = get_profitability_data(symbol)
         stock_name = get_stock_name(symbol)
 
-        
-
 
         # CEO ve CFO'yu kontrol etmek için döngü
         for officer in company_officers:
@@ -513,17 +484,19 @@ def profile(request, symbol):
 
         # Hisse senedi için verileri sözlüğe ekleyin
         stock_data = {
-            "pe_ratio": pe_ratio,
-            "price_to_book": price_to_book,
-            "ev_ebitda": ev_ebitda,
+            "pe_ratio": round(float(pe_ratio), 2) if pe_ratio != "N/A" else pe_ratio,
+            "price_to_book": round(price_to_book, 2) if price_to_book != "N/A" else price_to_book,
+            "ev_ebitda": round(enterpriseToEbitda, 2) if enterpriseToEbitda != "N/A" else enterpriseToEbitda,
+            "ebitda": round(ebitda, 2) if ebitda != "N/A" else ebitda,
             "ev_fcff": ev_fcff,
-            "roa": roa,
-            "roe": roe,
-            "current_ratio": current_ratio,
-            "quick_ratio": quick_ratio,
-            "total_debt_to_total_assets": total_debt_to_total_assets,
+            "roa": round(roa * 100, 2) if isinstance(roa, float) else roa,
+            "roe": round(roe * 100, 2) if isinstance(roe, float) else roe,
+            "current_ratio": round(current_ratio, 2) if current_ratio != "N/A" else current_ratio,
+            "quick_ratio": round(quick_ratio, 2) if quick_ratio != "N/A" else quick_ratio,
+            "total_debt_to_fcf": total_debt_to_fcf,
             "cash_market_cap": cash_to_marketcap,
 
+            
             "address": address,
             "city": city,
             "country": country,
@@ -544,16 +517,6 @@ def profile(request, symbol):
             "profitability_data": profitability_data,
             "stock_name": stock_name,
         }
-
-        # Verileri düzeltme
-        if isinstance(roa, float):
-            stock_data['roa'] = '{:.4f}'.format(roa * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 4 ondalık basamak gösteriyoruz
-        if isinstance(roe, float):
-            stock_data['roe'] = '{:.2f}'.format(roe * 100) # Yüzde cinsinden göstermek için 100 ile çarpıyoruz ve 2 ondalık basamak gösteriyoruz
-        if isinstance(cash_to_marketcap, float):
-            stock_data['cash_market_cap'] = '{:.4f}'.format(cash_to_marketcap) # Sayıyı iki ondalık basamağa yuvarlıyoruz
-            if cash_to_marketcap < 0:
-                stock_data['cash_market_cap'] = stock_data['cash_market_cap'].lstrip('-') # Eğer değer negatifse başındaki "-" işaretini kaldırıyoruz
 
         # Verileri şablona gönderin
         return render(request, 'profile.html', {'symbol': symbol, 'stock_data': stock_data})
