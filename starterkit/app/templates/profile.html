@@ -217,7 +217,7 @@
                                                     <td>
                                                         {% if date == 'Change' %}
                                                         {% if data.TR == "--" %}
-                                                        <span style="color: orange;">{{ data.TR }}</span>
+                                                        <span style="color: orange;">{{ data.TR }}%</span>
                                                         {% elif data.TR < 0 %} <span style="color: red;">{{ data.TR }}%
                                                             <i class="ri-arrow-down-s-fill ms-1"></i></span>
                                                             {% elif data.TR > 0 %}
@@ -238,7 +238,7 @@
                                                     <td>
                                                         {% if date == 'Change' %}
                                                         {%if data.GP == "--" %}
-                                                        <span style="color: orange;">{{ data.GP }}</span>
+                                                        <span style="color: orange;">{{ data.GP }}%</span>
                                                         {% elif data.GP < 0 %} <span style="color: red;">{{ data.GP }}%
                                                             <i class="ri-arrow-down-s-fill ms-1"></i></span>
                                                             {% else %}
@@ -257,7 +257,7 @@
                                                     <td>
                                                         {% if date == 'Change' %}
                                                         {%if data.OI == "--"%}
-                                                        <span style="color: orange;">{{ data.OI }}</span>
+                                                        <span style="color: orange;">{{ data.OI }}%</span>
                                                         {% elif data.OI < 0 %} <span style="color: red;">{{ data.OI }}%
                                                             <i class="ri-arrow-down-s-fill ms-1"></i></span>
                                                             {% else %}
@@ -276,7 +276,7 @@
                                                     <td>
                                                         {% if date == 'Change' %}
                                                         {%if data.NOPAT == "--"%}
-                                                        <span style="color: orange;">{{ data.NOPAT }}</span>
+                                                        <span style="color: orange;">{{ data.NOPAT }}%</span>
                                                         {% elif data.NOPAT < 0 %} <span style="color: red;">
                                                             {{data.NOPAT}}%
                                                             <i class="ri-arrow-down-s-fill ms-1"></i></span>
@@ -296,7 +296,7 @@
                                                     <td>
                                                         {% if date == 'Change' %}
                                                         {%if data.EBIT == "--"%}
-                                                        <span style="color: orange;">{{ data.EBIT }}</span>
+                                                        <span style="color: orange;">{{ data.EBIT }}%</span>
                                                         {% elif data.EBIT < 0 %} <span style="color: red;">
                                                             {{data.EBIT}}%
                                                             <i class="ri-arrow-down-s-fill ms-1"></i></span>
@@ -317,7 +317,7 @@
                                                     <td>
                                                         {% if date == 'Change' %}
                                                         {%if data.EBITDA == "--"%}
-                                                        <span style="color: orange;">{{ data.EBITDA }}</span>
+                                                        <span style="color: orange;">{{ data.EBITDA }}%</span>
                                                         {% elif data.EBITDA < 0 %} <span style="color: red;">
                                                             {{data.EBITDA}}%
                                                             <i class="ri-arrow-down-s-fill ms-1"></i></span>
@@ -338,7 +338,7 @@
                                                     <td>
                                                         {% if date == 'Change' %}
                                                         {%if data.NI == "--"%}
-                                                        <span style="color: orange;">{{ data.NI }}</span>
+                                                        <span style="color: orange;">{{ data.NI }}%</span>
                                                         {% elif data.NI < 0 %} <span style="color: red;">{{ data.NI }}%
                                                             <i class="ri-arrow-down-s-fill ms-1"></i></span>
                                                             {% else %}
@@ -353,8 +353,23 @@
                                                 </tr>
                                                 <tr class="border-b border-defaultborder">
                                                     <th scope="row" class="text-start"> FCFF </th>
-                                                    {%for FCFF, data in stock_data.profitability_data.items %}
-                                                    <td>{{ data.FCFF }}</td>{% endfor %}
+                                                    {%for date, data in stock_data.profitability_data.items %}
+                                                    <td>
+                                                        {% if date == 'Change' %}
+                                                        {%if data.FCFF == "--"%}
+                                                        <span style="color: orange;">{{ data.FCFF }}%</span>
+                                                        {% elif data.FCFF < 0 %} <span style="color: red;">
+                                                            {{data.FCFF}}%
+                                                            <i class="ri-arrow-down-s-fill ms-1"></i></span>
+                                                            {% else %}
+                                                            <span style="color: green;">{{ data.FCFF }}% <i
+                                                                    class="ri-arrow-up-s-fill ms-1"></i></span>
+                                                            {% endif %}
+                                                            {% else %}
+                                                            {{ data.FCFF }}
+                                                            {% endif %}
+                                                    </td>
+                                                    {% endfor %}
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -391,7 +406,7 @@
                                                             <td>{{ stock_data.ev_ebitda }}</td>
                                                         </tr>
                                                         <tr class="border-b border-defaultborder">
-                                                            <th scope="row" class="text-start">EV/FCF</th>
+                                                            <th scope="row" class="text-start">EV/FCFF</th>
                                                             <td>{{ stock_data.ev_fcff }}</td>
                                                         </tr>
                                                         <tr class="border-b border-defaultborder">
@@ -411,7 +426,7 @@
                                                             <td>{{ stock_data.quick_ratio }}</td>
                                                         </tr>
                                                         <tr class="border-b border-defaultborder">
-                                                            <th scope="row" class="text-start">Total Debt/FCF</th>
+                                                            <th scope="row" class="text-start">Total Debt/FCFF</th>
                                                             <td>{{ stock_data.total_debt_to_fcf }}</td>
                                                         </tr>
                                                         <tr class="border-b border-defaultborder">
@@ -431,7 +446,7 @@
                                     <div class="xl:col-span-6 col-span-12">
                                         <div class="box custom-box">
                                             <div class="box-header">
-                                                <div class="box-title">{{stock_data.stock_name}} Net Debt Analysis
+                                                <div class="box-title">{{stock_data.stock_name}}'s Net Debt Analysis
                                                 </div>
                                             </div>
                                             <div class="box-body">
@@ -447,7 +462,7 @@
                                     <div class="xl:col-span-6 col-span-16">
                                         <div class="box custom-box">
                                             <div class="box-header">
-                                                <div class="box-title">{{stock_data.stock_name}} Stock Price TL
+                                                <div class="box-title">{{stock_data.stock_name}}'s Stock Price TL
                                                 </div>
                                             </div>
                                             <div class="box-body">
@@ -466,7 +481,7 @@
                                     <div class="xl:col-span-6 col-span-16">
                                         <div class="box custom-box">
                                             <div class="box-header">
-                                                <div class="box-title">{{stock_data.stock_name}} Stock Price USD
+                                                <div class="box-title">{{stock_data.stock_name}}'s Stock Price USD
                                                 </div>
                                             </div>
                                             <div class="box-body">

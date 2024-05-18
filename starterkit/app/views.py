@@ -23,14 +23,11 @@ def format_market_cap(market_cap):
 def format_free_cash_flow(free_cash_flow):
     if free_cash_flow is None:
         return None
-
-    # Veriyi mutlak değere çevir
+   
     abs_value = abs(free_cash_flow)
 
-    # Milyar birimine çevir
     billion_value = abs_value / 10**9
 
-    # Negatif mi pozitif mi olduğuna bakarak uygun biçimde formatla
     if free_cash_flow < 0:
         return "- {:.2f}B".format(billion_value)
     else:
@@ -146,7 +143,7 @@ def convert_stock_prices_to_usd(ticker: str, start_date: str = "2020-01-01", end
     hist_df = yf.download(ticker, start=start_date, end=end_date)
 
     # USD/TRY döviz kuru verilerini alın
-    usd_try_data = yf.download("TRY=X", start=start_date, end=end_date)['Close']
+    usd_try_data = yf.download("USDTRY=X", start=start_date, end=end_date)['Close']
 
     # TL cinsinden hisse senedi fiyatlarını alın
     tl_prices = hist_df['Close']
