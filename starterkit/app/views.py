@@ -51,27 +51,20 @@ def format_total_debt(total_debt):
 
 
 def marketcap(request):
-    # Hisse senedi sembolleri
-    symbols = ["ARCLK.IS", "ALARK.IS", "ASELS.IS", "ASTOR.IS", "BIMAS.IS", "BRSAN.IS", "EKGYO.IS", "ENKAI.IS", "EREGL.IS", "FROTO.IS","GUBRF.IS", "HEKTS.IS", "KCHOL.IS",
-    "KONTR.IS", "KOZAL.IS", "KRDMD.IS", "ODAS.IS", "OYAKC.IS",
-    "PETKM.IS", "PGSUS.IS", "SAHOL.IS", "SASA.IS", "SISE.IS",
-    "TCELL.IS", "THYAO.IS", "TOASO.IS", "TUPRS.IS"]
+
+    symbols = ["ARCLK.IS", "ALARK.IS", "ASELS.IS", "ASTOR.IS", "BIMAS.IS", "BRSAN.IS", "EKGYO.IS", "ENKAI.IS", "EREGL.IS", "FROTO.IS","GUBRF.IS", "HEKTS.IS", "KCHOL.IS", "KONTR.IS", "KOZAL.IS", "KRDMD.IS", "ODAS.IS", "OYAKC.IS", "PETKM.IS", "PGSUS.IS", "SAHOL.IS", "SASA.IS", "SISE.IS", "TCELL.IS", "THYAO.IS", "TOASO.IS", "TUPRS.IS"]
     
-    # Tüm hisse senedi verilerini saklayacak bir sözlük oluşturalım
     stock_data = {}
 
     for symbol in symbols:
-        # Ticker objesi
         ticker = yf.Ticker(symbol)
 
-        # Geçerli fiyat
+        #current price
         current_price = ticker.history(period="1d")["Close"].iloc[-1]
 
-        # 52 hafta en yüksek ve en düşük fiyatları
         high_52w = ticker.info["fiftyTwoWeekHigh"]
         low_52w = ticker.info["fiftyTwoWeekLow"]
 
-        # Piyasa değerini alın
         market_cap = ticker.info["marketCap"]
 
         # PE Ratio
@@ -80,22 +73,17 @@ def marketcap(request):
             pe_ratio = float(pe_ratio)
             pe_ratio = "{:.2f}".format(pe_ratio)
 
-        # EV ve EBITDA değerleri
         enterprise_value = ticker.info.get("enterpriseValue")
         ebitda = ticker.info.get("ebitda")
 
-        # EV/EBITDA oranı
         ev_ebitda = None
         if enterprise_value is not None and ebitda is not None and ebitda != 0:
             ev_ebitda = enterprise_value / ebitda
 
-        # Free Cash Flow
         free_cash_flow = ticker.info.get("freeCashflow")
 
-        #totaaldebt
         total_debt = ticker.info.get("totalDebt")
 
-        # Her hisse senedi için verileri sözlüğe ekleyin
         stock_data[symbol] = {
             "current_price": current_price,
             "market_cap": market_cap,
@@ -105,7 +93,6 @@ def marketcap(request):
             "ev_ebitda": ev_ebitda,
             "free_cash_flow": free_cash_flow,
             "total_debt": total_debt
-            # Diğer verileri ekleyin
         }
         
         formatted_stock_data = {
@@ -115,16 +102,12 @@ def marketcap(request):
             "high_52w": data["high_52w"],
             "low_52w": data["low_52w"],
             "pe_ratio": data["pe_ratio"],
-            "ev_ebitda": "{:.2f}".format(data["ev_ebitda"]) if data["ev_ebitda"] is not None else None,  # İki ondalık hane için formatlama
-            "free_cash_flow": format_free_cash_flow(data["free_cash_flow"]), # Formatlanmış Free Cash Flow değeri
+            "ev_ebitda": "{:.2f}".format(data["ev_ebitda"]) if data["ev_ebitda"] is not None else None, #format the data
+            "free_cash_flow": format_free_cash_flow(data["free_cash_flow"]), #format the data
             "total_debt": format_total_debt(data["total_debt"]),
         }
         for symbol, data in stock_data.items()
     }
-    # Eski kodlar burada
-    
-    # Sıralama parametresini al
-
     return render(request, 'marketcap.html', {'stock_data': formatted_stock_data})
 
 def retrieve_stock_data(ticker: str, start_date: str = "2020-01-01", end_date: str = datetime.now().strftime("%Y-%m-%d")):
@@ -139,28 +122,25 @@ def retrieve_stock_data(ticker: str, start_date: str = "2020-01-01", end_date: s
     return hist_df, ticker_info
 
 def convert_stock_prices_to_usd(ticker: str, start_date: str = "2020-01-01", end_date: str = datetime.now().strftime("%Y-%m-%d")):
-    # Hisse senedi verilerini TL cinsinden alın
     hist_df = yf.download(ticker, start=start_date, end=end_date)
 
-    # USD/TRY döviz kuru verilerini alın
+    #usd/try change data
     usd_try_data = yf.download("USDTRY=X", start=start_date, end=end_date)['Close']
 
-    # TL cinsinden hisse senedi fiyatlarını alın
     tl_prices = hist_df['Close']
 
-    # TL fiyatlarını USD cinsine dönüştürme
+    #tl to usd
     tl_to_usd_prices = tl_prices / usd_try_data
 
     return tl_to_usd_prices
 
 def create_line_chart_with_usd_prices(symbol: str, start_date: str = "2020-01-01", end_date: str = datetime.now().strftime("%Y-%m-%d")):
-    # Hisse senedi verilerini TL cinsinden alın
+    #at first take the tl data
     hist_df = yf.download(symbol, start=start_date, end=end_date)
 
-    # USD cinsinden hisse senedi fiyatlarını alın
+    #converting usd
     usd_stock_prices = convert_stock_prices_to_usd(symbol, start_date, end_date)
 
-    # Plotly grafiği oluşturma
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(x=hist_df.index, y=usd_stock_prices, mode='lines', name='Close (USD)',
@@ -168,8 +148,6 @@ def create_line_chart_with_usd_prices(symbol: str, start_date: str = "2020-01-01
                              fill='tozeroy', 
                              fillcolor='rgba(147, 112, 219, 0.2)',
                              line=dict(color='#9370DB')))
-
-    # Grafiği düzenleme
     fig.update_layout(
         xaxis_title="Date",
         yaxis_title="Price",
@@ -181,17 +159,17 @@ def create_line_chart_with_usd_prices(symbol: str, start_date: str = "2020-01-01
     )
 
     fig.update_xaxes(
-        showgrid=True,  # Dikey çizgileri göster
-        gridcolor="rgba(0, 0, 0, 0.1)",  # Çizgi rengi (hafif gri)
-        linecolor="gray",    # X eksen çizgisi rengi (siyah)
-        linewidth=2,  # X eksen çizgisi kalınlığı
+        showgrid=True, 
+        gridcolor="rgba(0, 0, 0, 0.1)",  
+        linecolor="gray",  
+        linewidth=2, 
     )
 
     fig.update_yaxes(
-        showgrid=True,  # Yatay çizgileri göster
-        gridcolor="rgba(0, 0, 0, 0.1)",  # Çizgi rengi (hafif gri)
-        linecolor="gray",    # X eksen çizgisi rengi (siyah)
-        linewidth=2,  # X eksen çizgisi kalınlığı
+        showgrid=True, 
+        gridcolor="rgba(0, 0, 0, 0.1)", 
+        linecolor="gray",  
+        linewidth=2, 
     )
 
     return fig
@@ -271,7 +249,6 @@ def get_profitability_data(symbol):
     except Company.DoesNotExist:
         return None
     
-
 def get_stock_name(symbol):
     company_obj = Company.objects.get(symbol=symbol)
     stock_name = company_obj.name
@@ -325,7 +302,7 @@ def generate_net_debt_change_chart(symbol):
             separated_df[index] = percentage_change_df.loc[index]
             
 
-        # Görselleştirme
+        
         fig = go.Figure()
         colors = ["#845adf", "#f5b849", "#23b7e5"]
             
@@ -343,9 +320,9 @@ def generate_net_debt_change_chart(symbol):
                           plot_bgcolor='rgba(0,0,0,0)',
                           barmode='group',
                           height=500,  
-                          width=1570,)  # Yükseklik ayarı
+                          width=1570,)  
             
-        # "Total Debt" yerine "Financial Debt" olarak gösterim düzenleme
+        
         fig.for_each_trace(lambda trace: trace.update(name=trace.name.replace('Total Debt', 'Financial Debt')))
             
         fig.update_xaxes(showline=True, linewidth=1, linecolor='black')
@@ -360,24 +337,19 @@ def generate_net_debt_change_chart(symbol):
 
 
 def profile(request, symbol):
-    # Hisse senedi sembollerini ve etiketlerini tanımlayın
     stocks = {
         "ARCLK.IS": "ARCLK", "ALARK.IS": "ALARK", "ASELS.IS": "ASELS", "ASTOR.IS": "ASTOR", "BIMAS.IS": "BIMAS", "BRSAN.IS": "BRSAN","EKGYO.IS": "EKGYO",
         "ENKAI.IS": "ENKAI","EREGL.IS": "EREGL", "FROTO.IS": "FROTO","GUBRF.IS": "GUBRF","HEKTS.IS": "HEKTS","KCHOL.IS": "KCHOL","KONTR.IS": "KONTR", 
         "KOZAL.IS": "KOZAL","KRDMD.IS": "KRDMD","ODAS.IS": "ODAS","OYAKC.IS": "OYAKC","PETKM.IS": "PETKM",
         "PGSUS.IS": "PGSUS","SAHOL.IS": "SAHOL","SASA.IS": "SASA","SISE.IS": "SISE", 
         "TCELL.IS": "TCELL","THYAO.IS": "THYAO","TOASO.IS": "TOASO","TUPRS.IS": "TUPRS",
-        # Diğer hisse senetlerini buraya ekleyin
     }
 
-    # Tüm hisse senedi verilerini saklayacak bir sözlük oluşturun
     stock_data = {}
 
-    # İstenen hisse senedi için verileri alın
     label = stocks.get(symbol)
 
     if label:
-        # Ticker objesini oluşturun
         ticker = yf.Ticker(symbol)
 
         pe_ratio = ticker.info.get("trailingPE", "N/A")
@@ -402,20 +374,20 @@ def profile(request, symbol):
         total_debt = ticker.info.get("totalDebt", "N/A")
         total_debt_to_fcf = None
     
-        # total_debt ve free_cash_flow değerlerini float (ondalıklı sayı) türüne dönüştürme
+        # total_debt and free_cash_flow convert to float
         try:
             total_debt = float(total_debt)
             free_cash_flow = float(free_cash_flow)
         except (TypeError, ValueError):
-        # Dönüşüm hatası oluşursa veya değerler None ise, uygun bir hata mesajı veya varsayılan değer döndürme
+        #excepting errors
             total_debt = None
             free_cash_flow = None
 
-        # total_debt ve free_cash_flow değerleri uygun formata dönüştürüldüyse işlemi yapma
+        # total_debt_to_fcf calculation
         if total_debt is not None and free_cash_flow is not None:
             total_debt_to_fcf = round(total_debt / free_cash_flow, 2)
         else:
-            total_debt_to_fcf = "N/A"  # veya uygun bir hata mesajı veya varsayılan değer
+            total_debt_to_fcf = "N/A" 
 
         marketcap = ticker.info.get("marketCap", "N/A")
         total_cash = ticker.info.get("totalCash", "N/A")
@@ -423,25 +395,19 @@ def profile(request, symbol):
         if total_cash and marketcap:
             cash_to_marketcap = round(total_cash / marketcap, 2)
         
-        # Şirket hakkında daha detaylı bilgileri alın
+        #details about company
         company_info = ticker.info
-
-        # Şirketin adres bilgisini alın
         address = company_info.get("address2")
         city = company_info.get("city")
         country = company_info.get("country")
         sector = company_info.get("sector")
         industry = company_info.get("industry")
-
-        # Şirketin iletişim bilgilerini alın
         phone = company_info.get("phone")
         website = company_info.get("website")
         long_name = company_info.get("longName")
 
-        # Şirketin uzun açıklamasını alın
         long_description = company_info.get("longBusinessSummary")
 
-        # Şirketin yöneticilerinin bilgilerini alın
         company_officers = ticker.info.get("companyOfficers", [])
         ceo = "N/A"
         cfo = "N/A"
@@ -449,11 +415,9 @@ def profile(request, symbol):
         hist_df = yf.download(symbol, start="2020-01-01", end=datetime.now().strftime("%Y-%m-%d"))
         usd_chart = create_line_chart_with_usd_prices(symbol)
         
-        # USDTRY kuru için grafik oluşturun
         hist_df_tl, info = retrieve_stock_data(ticker)
         linechart_fig = create_line_chart(hist_df_tl)
 
-        
         chart_div = to_html(linechart_fig, full_html=False, include_plotlyjs="cdn")
         usd_chart_div = to_html(usd_chart, full_html=False, include_plotlyjs="cdn")
 
@@ -463,7 +427,6 @@ def profile(request, symbol):
         columnchart_fig = generate_net_debt_change_chart(symbol)
         chart_netdebt_div = to_html(columnchart_fig, full_html=False, include_plotlyjs="cdn")
 
-
         cash_flow= get_cash_flow_data(symbol)
         income_data = get_income_statement_data(symbol)
         balance_data = get_balance_sheet_data(symbol)
@@ -471,7 +434,6 @@ def profile(request, symbol):
         stock_name = get_stock_name(symbol)
 
 
-        # CEO ve CFO'yu kontrol etmek için döngü
         for officer in company_officers:
             title = officer.get("title", "").lower()  # Unvanı küçük harfe dönüştür
             if "ceo" in title or "chief executive" in title or "gm" in title or "general manager" in title:
@@ -479,7 +441,6 @@ def profile(request, symbol):
             elif "cfo" in title or "chief financial" in title or "head of financial" in title or "director of finance" in title or "financial director":
                 cfo = officer.get("name", "N/A")
 
-        # Hisse senedi için verileri sözlüğe ekleyin
         stock_data = {
             "pe_ratio": round(float(pe_ratio), 2) if pe_ratio != "N/A" else pe_ratio,
             "price_to_book": round(price_to_book, 2) if price_to_book != "N/A" else price_to_book,
